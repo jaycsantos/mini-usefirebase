@@ -1,14 +1,15 @@
 import { FirebaseApp } from 'firebase/app';
-import { useFirebase } from './useFirebase';
 import { useMemo } from 'react';
 import { getAnalytics } from 'firebase/analytics';
+import { useFirebase } from './useFirebase';
 
 export interface AnalyticsOptions {
   app: FirebaseApp;
 }
 
 export function useAnalytics(options?: AnalyticsOptions) {
-  const app = options?.app ?? useFirebase();
-  const db = useMemo(() => getAnalytics(app), [app]);
-  return db;
+  const firebase = useFirebase();
+  const app = options?.app ?? firebase();
+  const analytics = useMemo(() => getAnalytics(app), [app]);
+  return analytics;
 }

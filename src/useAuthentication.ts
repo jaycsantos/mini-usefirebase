@@ -8,7 +8,8 @@ export interface AuthenticationOptions {
 }
 
 export function useAuthentication(options?: AuthenticationOptions) {
-  const app = options?.app ?? useFirebase();
+  const firebase = useFirebase();
+  const app = options?.app ?? firebase();
   const auth = useMemo(() => getAuth(app), [app]);
   return auth;
 }

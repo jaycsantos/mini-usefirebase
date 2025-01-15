@@ -1,10 +1,15 @@
 {
   "compilerOptions": {
+    "composite": true,
     "target": "ES2020",
     "useDefineForClassFields": true,
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "module": "ESNext",
     "skipLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    },
 
     /* Bundler mode */
     "moduleResolution": "bundler",
@@ -22,7 +27,6 @@
     /* Add */
     "typeRoots": ["./dist/index.d.ts", "node_modules/@types"]
   },
-  /* include /index.ts*/
-  "include": ["src", "./index.ts", "test/hooks/useDoc.test.tsx"],
+  "include": ["src", "./index.ts", "test"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

@@ -1,0 +1,41 @@
+{
+  "includeVersion": true,
+  "excludeNotDocumented": true,
+  "excludeInternal": true,
+  "categorizeByGroup": true,
+  "groupReferencesByType": false,
+  "useTsLinkResolution": true,
+  "entryPoints": ["./src/index.ts"],
+  "exclude": ["test/**/*.test.ts"],
+  "groupOrder": ["Firebase", "*"],
+  "outputs": [
+    {
+      "name": "markdown",
+      "path": "./wiki",
+      "options": {
+        "navigation": {
+          "includeCategories": false,
+          "includeGroups": false,
+          "includeFolders": false,
+          "excludeReferences": true
+        },
+        // typedoc-plugin-markdown options
+        "hideBreadcrumbs": false,
+        "flattenOutputFiles": true,
+        "expandObjects": true,
+        "expandParameters": true,
+        "parametersFormat": "table",
+        "interfacePropertiesFormat": "table",
+        "enumMembersFormat": "table",
+        "propertyMembersFormat": "table",
+        "typeDeclarationFormat": "table",
+        "typeDeclarationVisibility": "verbose",
+        "formatWithPrettier": true,
+        "prettierConfigFile": "./.prettierrc"
+      }
+    }
+  ],
+
+  // "plugin": ["typedoc-plugin-markdown"]
+  "plugin": ["typedoc-plugin-markdown", "typedoc-github-wiki-theme"]
+}

@@ -1,42 +1,29 @@
+import { FirebaseApp as FirebaseAppCompat } from '@firebase/app-compat';
+
+// export type PartialIf<T, P, U> = T extends P ? Partial<U> : Required<U>;
+
+// export type Optional<T, Keys extends keyof T> = T & Partial<Pick<T, Keys>>;
+
 /**
- * Specifies the source from which Firestore data should be retrieved
- *
- * @enum {string}
- * @description Controls data fetching strategy for Firestore operations
- *
- * @example
- * ```typescript
- * const { data } = useDoc('posts/1', { source: FirestoreSource.serverOnly });
- * ```
+ * Anything that has reference to a Firebase app instance.
+ * @interface WithFirebaseApp
+ * @internal
  */
-export enum FirestoreSource {
-  /**
-   * Attempts to fetch from server first, falls back to cache if server unavailable
-   * Default behavior for most Firestore operations
-   */
-  serverOrCache = 'server-or-cache',
+export type WithFirebaseApp = {
+  /** The Firebase application instance */
+  app: FirebaseAppCompat;
+};
 
-  /**
-   * Attempts to fetch from cache first, falls back to server only if cache miss
-   * Useful for optimizing read performance
-   */
-  cacheOrServer = 'cache-or-server',
-
-  /**
-   * Fetches from both cache and server. Uses cache data first then updates with server data.
-   * Useful for performant UIs that need to display cached data immediately
-   */
-  cacheAndServer = 'cache-and-server',
-
-  /**
-   * Only fetches from cache, error if data not in cache
-   * Useful for offline-only applications
-   */
-  cacheOnly = 'cache-only',
-
-  /**
-   * Only fetches from server, error if server unreachable
-   * Useful when fresh data is critical
-   */
-  serverOnly = 'server-only',
-}
+/**
+ * Anything that has can do asnychronous operations.
+ * @interface WithAsyncState
+ * @internal
+ */
+export type WithAsyncState = {
+  /// Whether the operation is currently loading.
+  isLoading: boolean;
+  /// Any error that occurred during the operation.
+  error: Error | null;
+  /// Forces the operation to retry. Clears any previous error and sets isLoading to true.
+  retry: () => void;
+};
