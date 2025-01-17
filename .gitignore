@@ -26,3 +26,9 @@ dist-ssr
 # firebase
 firebase-debug.log
 firestore-debug.log
+.firebaserc
+test/firebase
+
+tsconfig.tsbuildinfo
+
+wiki
