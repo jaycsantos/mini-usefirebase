@@ -17,7 +17,7 @@ npm install usefirebase
 ## Usage
 
 ```typescript
-import { FirebaseAppContext, useFirestore, useDoc } from 'usefirebase';
+import { FirebaseAppContext, useDoc, useColl } from 'usefirebase';
 import { initializeApp } from 'firebase/app';
 import { where } from 'firebase/firestore';
 import firebaseConfig from '../firebase';

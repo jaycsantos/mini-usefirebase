@@ -65,7 +65,7 @@ export enum RefCache {
 /**
  * Anything that has reference to a Firestore instance.
  * @interface WithFirestore
- * @internal
+ * @ignore
  */
 export type WithFirestore = {
   /** The Firestore instance */
@@ -82,7 +82,7 @@ export type WithFirestore = {
 export type RefOptions<T = DocumentData> = Partial<WithFirebaseApp & WithFirestore> & {
   /** Data converter for the document reference. */
   converter?: FirestoreDataConverter<T>;
-  /** The cache strategy to use for listening or fetching Firestore data. Defaults to `realtime` */
+  /** The cache strategy to use for listening or fetching Firestore data. Defaults to "liveServer" */
   cache?: RefCache;
 };
 
@@ -91,6 +91,7 @@ export type RefOptions<T = DocumentData> = Partial<WithFirebaseApp & WithFiresto
  * @interface FirestoreResult<T, S>
  * @template T - The type of document data
  * @template S - The type of Firestore snapshot
+ *
  * @group Firestore
  * @category Interfaces
  */
