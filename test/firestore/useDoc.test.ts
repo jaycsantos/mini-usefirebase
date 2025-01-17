@@ -1,7 +1,7 @@
-import { RefCache } from '@/firestore/types';
-import { useDoc } from '@/firestore/useDoc';
 import { act, renderHook, waitFor } from '@testing-library/react';
 import { afterAll, describe, expect, it } from 'vitest';
+import { RefCache } from '../../src/firestore/types';
+import { useDoc } from '../../src/firestore/useDoc';
 import { admin, db } from './firestoreHelper';
 
 describe('useDoc', () => {

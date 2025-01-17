@@ -60,7 +60,10 @@ export function useFirestoreGetter<
       setError(new Error('No reference provided'));
       return;
     }
-    if (options.cache?.startsWith(RefCache.liveServer) || options.cache == RefCache.oneCacheAndServer) {
+    if (
+      options.cache?.startsWith(RefCache.liveServer) ||
+      options.cache == RefCache.oneCacheAndServer
+    ) {
       const unsub = from.onSnapshot(
         ref,
         {

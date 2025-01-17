@@ -1,5 +1,5 @@
 import useEqual from '@/common/useEqual';
-import { doc, DocumentData, DocumentReference, refEqual } from '@firebase/firestore';
+import { doc, DocumentData, DocumentReference, refEqual } from 'firebase/firestore';
 import { RefOptions } from './types';
 import { useFirestore } from './useFirestore';
 

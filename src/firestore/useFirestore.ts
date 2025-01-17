@@ -1,5 +1,5 @@
 import { WithFirebaseApp } from '@/types';
-import { Firestore, getFirestore } from '@firebase/firestore';
+import { Firestore, getFirestore } from 'firebase/firestore';
 import { useCallback, useRef } from 'react';
 import { useFirebase } from '../useFirebase';
 

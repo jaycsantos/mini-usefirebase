@@ -82,7 +82,9 @@ export function useFirebase(): () => FirebaseApp {
 
   const getApp = useCallback(() => {
     if (!appData)
-      throw new Error('useFirebaseApp must be used within a FirebaseProvider or pass the app explicitly');
+      throw new Error(
+        'useFirebaseApp must be used within a FirebaseProvider or pass the app explicitly'
+      );
     return appData.app;
   }, [appData]);
 

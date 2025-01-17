@@ -1,7 +1,7 @@
-import { RefCache } from '@/firestore/types';
 import { act, renderHook, waitFor } from '@testing-library/react';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
-import { useColl } from '@/firestore/useColl';
+import { RefCache } from '../../src/firestore/types';
+import { useColl } from '../../src/firestore/useColl';
 import { admin, db } from './firestoreHelper';
 
 describe('useColl', () => {

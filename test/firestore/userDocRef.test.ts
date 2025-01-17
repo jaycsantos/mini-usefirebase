@@ -1,7 +1,7 @@
 import { renderHook } from '@testing-library/react';
 import { doc, DocumentData, DocumentReference } from 'firebase/firestore';
 import { describe, expect, it } from 'vitest';
-import { useDocRef } from '@/firestore/useDocRef';
+import { useDocRef } from '../../src/firestore/useDocRef';
 import { db } from './firestoreHelper';
 
 describe('useDocRef', () => {
