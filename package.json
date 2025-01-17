@@ -1,5 +1,5 @@
 {
-  "name": "usefirebase",
+  "name": "@jaycsantos/usefirebase",
   "private": false,
   "version": "0.1.0",
   "type": "module",
@@ -19,7 +19,10 @@
   "publishConfig": {
     "access": "public"
   },
-  "repository": "https://github.com/jaycsantos/usefirebase",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jaycsantos/useFirebase.git"
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
@@ -55,5 +58,19 @@
     "vite-plugin-dts": "^4.5.0",
     "vite-tsconfig-paths": "^5.1.4",
     "vitest": "^2.1.8"
-  }
+  },
+  "description": "Minimal firebase react hooks",
+  "directories": {
+    "test": "test"
+  },
+  "keywords": [
+    "react",
+    "firebase"
+  ],
+  "author": "jaycsantos",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jaycsantos/useFirebase/issues"
+  },
+  "homepage": "https://github.com/jaycsantos/useFirebase#readme"
 }
