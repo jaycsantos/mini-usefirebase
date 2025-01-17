@@ -11,13 +11,13 @@ Minimal firebase react hooks
 ## Installation
 
 ```bash
-npm install @jaycsantos/usefirebase
+npm install mini-usefirebase
 ```
 
 ## Usage
 
 ```typescript
-import { FirebaseAppContext, useDoc, useColl } from '@jaycsantos/usefirebase';
+import { FirebaseAppContext, useDoc, useColl } from 'mini-usefirebase';
 import { initializeApp } from 'firebase/app';
 import { where } from 'firebase/firestore';
 import firebaseConfig from '../firebase';
@@ -44,3 +44,12 @@ function MyComponent(){
   //...
 }
 ```
+
+### Feature Roadmap
+
+- [x] useFirebase
+- [x] useFirestore
+- [ ] useAuth
+- [ ] useDatabase
+- [ ] useFunctions
+- [ ] useStorage
