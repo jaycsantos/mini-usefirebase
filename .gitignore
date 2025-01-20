@@ -29,6 +29,8 @@ firestore-debug.log
 .firebaserc
 test/firebase
 
-tsconfig.tsbuildinfo
+#typescript
+*.tsbuildinfo
 
+#github
 wiki

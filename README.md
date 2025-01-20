@@ -1,18 +1,22 @@
-# UseFirebase
+# mini-usefirebase
 
 Minimal firebase react hooks
 
 ## Features
 
 - Least boilerplate code to integrate firebase hooks
-- Firestore strategies that leverage local cache
-- Zero dependencies other than firebase
+- Firestore strategies that leverage realtime updates and/or local cache
+- Zero dependencies other than react and firebase
 
 ## Installation
 
 ```bash
 npm install mini-usefirebase
 ```
+
+## API Reference
+
+See [https://github.com/jaycsantos/mini-usefirebase/wiki/globals](https://github.com/jaycsantos/mini-usefirebase/wiki/globals)
 
 ## Usage
 
