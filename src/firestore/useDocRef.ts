@@ -43,8 +43,8 @@ export function useDocRef<T = DocumentData>(
   pathOrRef: string | DocumentReference<T>,
   options?: RefOptions<T>
 ): DocumentReference<T> {
-  const firestore = useFirestore(options);
-  const db = typeof pathOrRef != 'string' ? pathOrRef.firestore : (options?.db ?? firestore());
+  const getFirestore = useFirestore(options);
+  const db = typeof pathOrRef != 'string' ? pathOrRef.firestore : getFirestore();
 
   const docRef = typeof pathOrRef == 'string' ? doc(db, pathOrRef) : pathOrRef;
   const docRefT = options?.converter

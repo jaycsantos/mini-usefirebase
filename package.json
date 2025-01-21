@@ -27,7 +27,8 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "test": "vitest",
+    "test": "firebase emulators:exec \"npx vitest run --coverage\"",
+    "test:watch": "firebase emulators:exec --ui \"npx vitest watch\"",
     "preview": "vite preview"
   },
   "peerDependencies": {
@@ -42,6 +43,7 @@
     "@types/react": "^19.0.4",
     "@types/react-dom": "^19.0.2",
     "@vitejs/plugin-react": "^4.3.4",
+    "@vitest/coverage-v8": "^2.1.8",
     "eslint": "^9.17.0",
     "eslint-plugin-react-hooks": "^5.0.0",
     "eslint-plugin-react-refresh": "^0.4.16",

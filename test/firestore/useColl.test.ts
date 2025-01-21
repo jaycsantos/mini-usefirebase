@@ -1,8 +1,7 @@
 import { act, renderHook, waitFor } from '@testing-library/react';
-import { afterAll, beforeAll, describe, expect, it } from 'vitest';
-import { RefCache } from '../../src/firestore/types';
-import { useColl } from '../../src/firestore/useColl';
-import { admin, db } from './firestoreHelper';
+import { RefCache } from '@/firestore/types';
+import { useColl } from '@/firestore/useColl';
+import { admin, db } from './helpers';
 
 describe('useColl', () => {
   const collName = 'useColl';
@@ -11,7 +10,7 @@ describe('useColl', () => {
   beforeAll(async () => {
     const collRef = admin.db.collection(collName);
     const batch = admin.db.batch();
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 2; i++) {
       const payload = { value: i };
       data.push(payload);
       batch.create(collRef.doc(i.toString()), payload);
@@ -19,18 +18,20 @@ describe('useColl', () => {
     await batch.commit();
   });
 
-  afterAll(async () => admin.deleteCollection(collName));
+  afterAll(async () => await admin.deleteCollection(collName));
 
   it('should return snapshot, data, isLoading, and error', async () => {
     const { result } = renderHook(() => useColl(collName, [], { db, cache: RefCache.one }));
 
-    expect(result.current.isLoading).toBe(true);
+    await waitFor(() => {
+      expect(result.current.isLoading).toBe(true);
+    });
 
     await waitFor(() => {
       expect(result.current.isLoading).toBe(false);
+      expect(result.current.data).toEqual(data);
       expect(result.current.error).toBeNull();
       expect(result.current.snapshot).toBeTruthy();
-      expect(Array.isArray(result.current.data)).toBe(true);
     });
   });
 
@@ -51,11 +52,32 @@ describe('useColl', () => {
       data.push(payload);
     });
 
+    expect(result.current.isLoading).toBe(false);
+    expect(result.current.error).toBeNull();
+    await waitFor(() => {
+      expect(result.current.snapshot?.size).toEqual(data.length);
+    });
+  });
+
+  it('should be retriable', async () => {
+    const { result } = renderHook(() => useColl(collName, [], { db, cache: RefCache.one }));
+
     await waitFor(() => {
       expect(result.current.isLoading).toBe(false);
+      expect(result.current.data).toEqual(data);
       expect(result.current.error).toBeNull();
-      expect(result.current.data).toContainEqual(payload);
-      expect(result.current.snapshot?.size).toEqual(data.length);
+      expect(result.current.snapshot).toBeTruthy();
+    });
+
+    act(() => {
+      result.current.retry();
+    });
+
+    await waitFor(() => {
+      expect(result.current.isLoading).toBe(true);
+    });
+    await waitFor(() => {
+      expect(result.current.isLoading).toBe(false);
     });
   });
 });

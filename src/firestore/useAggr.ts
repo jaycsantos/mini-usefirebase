@@ -1,5 +1,5 @@
 import cancellable from '@/utils/cancellable';
-import useAsyncState from '@/common/useAsyncState';
+import useRetriableAsyncState from '@/common/useRetriableAsyncState';
 import useEqual from '@/common/useEqual';
 import {
   AggregateQuerySnapshot,
@@ -50,13 +50,12 @@ export function useAggr<T extends AggregateSpec>(
 ): RefResult<AggregateSpecData<T>, AggregateQuerySnapshot<T>> {
   const {
     value: snapshot,
-    setValue: setSnapshot,
     error,
-    setError,
+    startAsync,
     isLoading,
     retries,
     retry,
-  } = useAsyncState<AggregateQuerySnapshot<T> | null>();
+  } = useRetriableAsyncState<AggregateQuerySnapshot<T> | null>();
 
   const queryRef = useEqual(query, queryEqual);
 
@@ -64,9 +63,9 @@ export function useAggr<T extends AggregateSpec>(
     const { promise, cancel } = cancellable<AggregateQuerySnapshot<T>>(
       getAggregateFromServer(queryRef, aggregate)
     );
-    promise.then(setSnapshot).catch(setError);
+    startAsync(() => promise);
     return () => cancel();
-  }, [queryRef, aggregate, retries, setError, setSnapshot]);
+  }, [queryRef, aggregate, retries, startAsync]);
 
   return {
     snapshot,

@@ -2,7 +2,7 @@ import { act, renderHook, waitFor } from '@testing-library/react';
 import { afterAll, describe, expect, it } from 'vitest';
 import { RefCache } from '../../src/firestore/types';
 import { useDoc } from '../../src/firestore/useDoc';
-import { admin, db } from './firestoreHelper';
+import { admin, db } from './helpers';
 
 describe('useDoc', () => {
   const collName = 'useDoc';
@@ -144,6 +144,7 @@ describe('useDoc', () => {
     const { result } = renderHook(() => useDoc(path, { db, cache: RefCache.one }));
     await waitFor(() => {
       expect(result.current.data).toEqual(payload);
+      expect(result.current.isLoading).toBe(false);
     });
 
     await act(async () => {
@@ -151,10 +152,11 @@ describe('useDoc', () => {
       result.current.retry();
     });
 
-    expect(result.current.isLoading).toBe(false);
+    expect(result.current.isLoading).toBe(true);
     expect(result.current.error).toBeNull();
 
     await waitFor(() => {
+      expect(result.current.isLoading).toBe(false);
       expect(result.current.data).toEqual({ count: 1 });
     });
   });

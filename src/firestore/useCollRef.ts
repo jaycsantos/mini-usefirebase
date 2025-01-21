@@ -47,12 +47,14 @@ export function useCollRef<T = DocumentData>(
   constraints?: QueryConstraint | QueryConstraint[],
   options?: RefOptions<T>
 ): Query<T> {
-  const firestore = useFirestore(options);
-  const db = typeof refOrName != 'string' ? refOrName.firestore : (options?.db ?? firestore());
+  const getFirestore = useFirestore(options);
+  const db = typeof refOrName != 'string' ? refOrName.firestore : getFirestore();
 
   const collRef = typeof refOrName == 'string' ? (collection(db, refOrName) as Query) : refOrName;
   const queryRef = query(
-    options?.converter ? collRef.withConverter<T>(options?.converter) : (collRef as CollectionReference<T>),
+    options?.converter
+      ? collRef.withConverter<T>(options?.converter)
+      : (collRef as CollectionReference<T>),
     ...(constraints ? (Array.isArray(constraints) ? constraints : [constraints]) : [])
   );
 

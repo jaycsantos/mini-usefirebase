@@ -17,11 +17,17 @@ export default defineConfig({
       fileName: (format) => `index.${format}.js`,
     },
     rollupOptions: {
-      external: ['react', 'react-dom'],
+      external: [
+        'react',
+        'firebase/firestore',
+        'firebase/app',
+        'firebase/auth',
+        'firebase/analytics',
+        '@firebase/app-compat',
+      ],
       output: {
         globals: {
           react: 'React',
-          'react-dom': 'ReactDOM',
         },
       },
     },
@@ -40,5 +46,5 @@ export default defineConfig({
   //react() enables React support.
   //dts() generates TypeScript declaration files (*.d.ts)
   //during the build.
-  plugins: [react(), dts(), tsconfigPaths()],
+  plugins: [react(), dts({ rollupTypes: true }), tsconfigPaths()],
 });

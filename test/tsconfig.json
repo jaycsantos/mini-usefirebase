@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "types": ["vitest/globals"],
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["../src/*"]
+    },
+    "jsx": "react-jsx"
+  },
+  "include": [".", "../src"],
+  "references": [{ "path": "../tsconfig.node.json" }]
+}

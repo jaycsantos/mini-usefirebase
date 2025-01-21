@@ -7,7 +7,7 @@ import {
   QuerySnapshot,
 } from 'firebase/firestore';
 import { useEffect } from 'react';
-import useAsyncState from '../common/useAsyncState';
+import useRetriableAsyncState from '../common/useRetriableAsyncState';
 import cancellable from '../utils/cancellable';
 import { RefCache, RefOptions, RefResult } from './types';
 
@@ -42,47 +42,44 @@ export function useFirestoreGetter<
   options,
 }: {
   from: FirestoreGetters<T, Ref, Snap>;
-  ref: Ref | null;
+  ref: Ref;
   options: RefOptions<T>;
 }): RefResult<T, Snap> {
   const {
     value: snapshot,
-    setValue: setSnapshot,
     error,
-    setError,
     isLoading,
+    setError,
+    startAsync,
     retries,
     retry,
-  } = useAsyncState<Snap | null>();
+  } = useRetriableAsyncState<Snap | null>();
+  const cache = options.cache ?? RefCache.one;
 
   useEffect(() => {
-    if (!ref) {
-      setError(new Error('No reference provided'));
-      return;
-    }
-    if (
-      options.cache?.startsWith(RefCache.liveServer) ||
-      options.cache == RefCache.oneCacheAndServer
-    ) {
-      const unsub = from.onSnapshot(
-        ref,
-        {
-          includeMetadataChanges: options.cache == RefCache.liveServerMetadata,
-        },
-        (snapshot) => {
-          setSnapshot(snapshot);
+    if (cache.startsWith(RefCache.liveServer) || cache == RefCache.oneCacheAndServer) {
+      let unsub: () => void;
+      startAsync((setSnapshot) => {
+        unsub = from.onSnapshot(
+          ref,
+          {
+            includeMetadataChanges: cache == RefCache.liveServerMetadata,
+          },
+          (snapshot) => {
+            setSnapshot(snapshot);
 
-          if (options.cache == RefCache.oneCacheAndServer && !snapshot.metadata.fromCache) {
-            unsub();
-          }
-        },
-        (e) => setError(e)
-      );
+            if (cache == RefCache.oneCacheAndServer && !snapshot.metadata.fromCache) {
+              unsub();
+            }
+          },
+          (e) => setError(e)
+        );
+      });
       return () => unsub();
     } else {
       const { promise, cancel } = cancellable<Snap>(
         (() => {
-          switch (options.cache) {
+          switch (cache) {
             case RefCache.oneCacheOrServer:
               return from.getCache(ref).catch(() => from.getServer(ref));
             case RefCache.oneCache:
@@ -95,10 +92,10 @@ export function useFirestoreGetter<
           }
         })()
       );
-      promise.then(setSnapshot).catch(setError);
+      startAsync(() => promise);
       return () => cancel;
     }
-  }, [ref, from, options.cache, retries, setError, setSnapshot]);
+  }, [ref, from, cache, retries, setError, startAsync]);
 
   return {
     snapshot,

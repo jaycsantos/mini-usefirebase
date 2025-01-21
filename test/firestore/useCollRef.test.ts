@@ -2,7 +2,7 @@ import { renderHook } from '@testing-library/react';
 import { collection, Query, QueryConstraint, where } from 'firebase/firestore';
 import { describe, expect, it, vi } from 'vitest';
 import { useCollRef } from '../../src/firestore/useCollRef';
-import { db } from './firestoreHelper';
+import { db } from './helpers';
 
 vi.mock('@/useFirestore');
 

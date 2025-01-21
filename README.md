@@ -5,7 +5,9 @@ Minimal firebase react hooks
 ## Features
 
 - Least boilerplate code to integrate firebase hooks
-- Firestore strategies that leverage realtime updates and/or local cache
+- Minimal tree-shakeable interface
+- Hooks are only wrappers to simplify the complexity of handling async firebase operations
+- Firestore strategies that react to realtime updates and/or local cache
 - Zero dependencies other than react and firebase
 
 ## Installation
@@ -53,7 +55,7 @@ function MyComponent(){
 
 - [x] useFirebase
 - [x] useFirestore
-- [ ] useAuth
+- [x] useAuth
 - [ ] useDatabase
 - [ ] useFunctions
 - [ ] useStorage

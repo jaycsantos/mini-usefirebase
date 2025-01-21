@@ -53,7 +53,8 @@ import { useFirestoreGetter } from './useFirestoreGetter';
  * const { data, isLoading } = useColl(queryRef, [where('age', '>', 18)]);
  * ```
  *
- * Refetching the data
+ * Refetching will use old stale data while loading. You can use isLoading to determine
+ * if a new data is potentially incoming.
  * ```typescript
  * function MyComponent({firebaseApp}) {
  *   const options = { cache: RefCache.one };
@@ -93,12 +94,7 @@ export function useColl<T = DocumentData>(
   const queryRef = useCollRef<T>(pathOrQuery, constraints, options);
 
   const results = useFirestoreGetter<T, Query<T>, QuerySnapshot<T>>({
-    from: {
-      getDefault: getDocs,
-      getCache: getDocsFromCache,
-      getServer: getDocsFromServer,
-      onSnapshot,
-    },
+    from,
     ref: queryRef,
     options,
   });
@@ -110,3 +106,10 @@ export function useColl<T = DocumentData>(
     },
   };
 }
+
+const from = {
+  getDefault: getDocs,
+  getCache: getDocsFromCache,
+  getServer: getDocsFromServer,
+  onSnapshot,
+};

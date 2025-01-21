@@ -1,4 +1,4 @@
-import { WithFirebaseApp, WithAsyncState } from '@/types';
+import { WithFirebaseApp, WithRetryAsyncState, Prettify } from '@/common/types';
 import { Firestore, DocumentData, FirestoreDataConverter } from 'firebase/firestore';
 
 /**
@@ -79,12 +79,14 @@ export type WithFirestore = {
  * @group Firestore
  * @category Interfaces
  */
-export type RefOptions<T = DocumentData> = Partial<WithFirebaseApp & WithFirestore> & {
-  /** Data converter for the document reference. */
-  converter?: FirestoreDataConverter<T>;
-  /** The cache strategy to use for listening or fetching Firestore data. Defaults to "liveServer" */
-  cache?: RefCache;
-};
+export type RefOptions<T = DocumentData> = Prettify<
+  Partial<WithFirebaseApp & WithFirestore> & {
+    /** Data converter for the document reference. */
+    converter?: FirestoreDataConverter<T>;
+    /** The cache strategy to use for listening or fetching Firestore data. Defaults to "liveServer" */
+    cache?: RefCache;
+  }
+>;
 
 /**
  * Result object for Firestore operations.
@@ -95,9 +97,11 @@ export type RefOptions<T = DocumentData> = Partial<WithFirebaseApp & WithFiresto
  * @group Firestore
  * @category Interfaces
  */
-export type RefResult<T, S> = WithAsyncState & {
-  /** The document data */
-  data?: T;
-  /** The Firestore snapshot */
-  snapshot: S | null;
-};
+export type RefResult<T, S> = Prettify<
+  WithRetryAsyncState & {
+    /** The document data */
+    data?: T;
+    /** The Firestore snapshot */
+    snapshot: S | null;
+  }
+>;

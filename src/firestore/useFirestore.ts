@@ -1,12 +1,12 @@
-import { WithFirebaseApp } from '@/types';
+import { Prettify, WithFirebaseApp } from '@/common/types';
+import { useFirebase } from '@/useFirebase';
 import { Firestore, getFirestore } from 'firebase/firestore';
-import { useCallback, useRef } from 'react';
-import { useFirebase } from '../useFirebase';
+import { useCallback } from 'react';
 
 /**
  * React hook to initialize and access Firebase Firestore
  *
- * @param {FirestoreOptions} [options] - Hook options, can pass app or db instance
+ * @param [options] - Hook options, can pass app or db instance
  * @returns A function that returns the {@link https://firebase.google.com/docs/reference/js/firebase.firestore | Firestore} database
  *
  * @example
@@ -21,17 +21,8 @@ import { useFirebase } from '../useFirebase';
  * @group Firestore
  * @category Hooks
  */
-export function useFirestore(options?: Partial<WithFirebaseApp>): () => Firestore {
+export function useFirestore(options?: Prettify<Partial<WithFirebaseApp>>): () => Firestore {
   const getApp = useFirebase();
-  const ref = useRef<Firestore>(null);
-
-  const getDb = useCallback(() => {
-    const app = options?.app ?? getApp();
-    if (ref.current == null || ref.current?.app != app) {
-      ref.current = getFirestore(app);
-    }
-    return ref.current;
-  }, [getApp, options?.app]);
-
-  return getDb;
+  const app = options?.app ?? getApp();
+  return useCallback(() => (app ? getFirestore(app) : getFirestore()), [app]);
 }

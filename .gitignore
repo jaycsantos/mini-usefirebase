@@ -27,10 +27,11 @@ dist-ssr
 firebase-debug.log
 firestore-debug.log
 .firebaserc
-test/firebase
+test/firebase.ts
 
 #typescript
 *.tsbuildinfo
 
 #github
 wiki
+coverage

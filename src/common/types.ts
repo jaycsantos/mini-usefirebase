@@ -7,8 +7,9 @@ import { FirebaseApp as FirebaseAppCompat } from '@firebase/app-compat';
 /**
  * Anything that has reference to a Firebase app instance.
  * @interface WithFirebaseApp
- * @internal
+ *
  * @inline
+ * @ignore
  */
 export type WithFirebaseApp = {
   /** The Firebase application instance */
@@ -20,7 +21,6 @@ export type WithFirebaseApp = {
  * @interface WithAsyncState
  * @param {boolean} isLoading - Whether the operation is currently loading.
  * @param {Error | null} error - Any error that occurred during the operation.
- * @param {() => void} retry - Forces the operation to retry. Clears any previous error and sets isLoading to true.
  *
  * @inline
  * @ignore
@@ -30,6 +30,32 @@ export type WithAsyncState = {
   isLoading: boolean;
   /** Any error that occurred during the operation. */
   error: Error | null;
-  /** Forces the operation to retry. Clears any previous error and sets isLoading to true. */
-  retry: () => void;
 };
+
+/**
+ * The same with {@link WithAsyncState} but with a retriable.
+ * @interface WithRetryAsyncState
+ * @param {() => void} retry - Forces the operation to retry. Clears any previous error and sets isLoading to true.
+ *
+ * @inline
+ * @ignore
+ */
+export type WithRetryAsyncState = Prettify<
+  WithAsyncState & {
+    /** Forces the operation to retry. Clears any previous error and sets isLoading to true. */
+    retry: () => void;
+  }
+>;
+
+/**
+ * VSCode expand type alias
+ *
+ * Credits to https://twitter.com/mattpocockuk/status/1653403198885904387
+ *
+ * @interface Prettify
+ * @inline
+ * @ignore
+ */
+export type Prettify<T> = {
+  [K in keyof T]: T[K];
+} & {};

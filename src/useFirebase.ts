@@ -1,4 +1,4 @@
-import { WithFirebaseApp } from '@/types';
+import { WithFirebaseApp } from '@/common/types';
 import { FirebaseApp } from '@firebase/app-compat';
 import { createContext, useCallback, useContext } from 'react';
 
@@ -77,16 +77,8 @@ export const FirebaseAppContext = createContext<WithFirebaseApp | null>(null);
  * @category Hooks
  */
 
-export function useFirebase(): () => FirebaseApp {
+export function useFirebase(): () => FirebaseApp | undefined {
   const appData = useContext(FirebaseAppContext);
-
-  const getApp = useCallback(() => {
-    if (!appData)
-      throw new Error(
-        'useFirebaseApp must be used within a FirebaseProvider or pass the app explicitly'
-      );
-    return appData.app;
-  }, [appData]);
-
-  return getApp;
+  const app = appData?.app;
+  return useCallback(() => app, [app]);
 }

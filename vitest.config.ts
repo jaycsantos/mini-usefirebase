@@ -11,8 +11,9 @@ export default mergeConfig(
       environment: 'jsdom',
       coverage: {
         provider: 'v8',
+        reporter: ['json'],
       },
-      include: ['**/*.{test,spec}.{js,ts,jsx,tsx}'],
+      include: ['test/**/*.{test,spec}.{js,ts,jsx,tsx}'],
     },
   })
 );
