@@ -1,5 +1,4 @@
 import useEqual from '@/common/useEqual';
-import { useFirestore } from './useFirestore';
 import {
   collection,
   type DocumentData,
@@ -7,9 +6,9 @@ import {
   query,
   QueryConstraint,
   queryEqual,
-  CollectionReference,
 } from 'firebase/firestore';
 import { RefOptions } from './types';
+import { useFirestore } from './useFirestore';
 
 /**
  * A React hook that creates and memoizes a Firestore collection reference with query constraints.
@@ -42,21 +41,26 @@ import { RefOptions } from './types';
  * @group Firestore
  * @category Hooks
  */
-export function useCollRef<T = DocumentData>(
-  refOrName: Query | string,
+export function useCollRef<T = DocumentData, R = DocumentData>(
+  refOrName: Query<R> | string,
   constraints?: QueryConstraint | QueryConstraint[],
   options?: RefOptions<T>
 ): Query<T> {
   const getFirestore = useFirestore(options);
   const db = typeof refOrName != 'string' ? refOrName.firestore : getFirestore();
 
-  const collRef = typeof refOrName == 'string' ? (collection(db, refOrName) as Query) : refOrName;
-  const queryRef = query(
-    options?.converter
-      ? collRef.withConverter<T>(options?.converter)
-      : (collRef as CollectionReference<T>),
-    ...(constraints ? (Array.isArray(constraints) ? constraints : [constraints]) : [])
-  );
+  let queryRef = typeof refOrName == 'string' ? (collection(db, refOrName) as Query<R>) : refOrName;
 
-  return useEqual(queryRef, queryEqual);
+  constraints = constraints ? (Array.isArray(constraints) ? constraints : [constraints]) : [];
+  if (constraints.length > 0) queryRef = query(queryRef, ...constraints);
+
+  let ref = queryRef as Query<T>;
+  if (options) {
+    if (options.converter) {
+      ref = queryRef.withConverter<T>(options.converter);
+    } else if (options.converter === null) {
+      ref = queryRef.withConverter(null) as Query<T>;
+    }
+  }
+  return useEqual(ref, queryEqual);
 }

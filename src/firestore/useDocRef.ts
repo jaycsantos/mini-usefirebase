@@ -39,17 +39,24 @@ import { useFirestore } from './useFirestore';
  * @group Firestore
  * @category Hooks
  */
-export function useDocRef<T = DocumentData>(
-  pathOrRef: string | DocumentReference<T>,
+export function useDocRef<T = DocumentData, R = DocumentData>(
+  pathOrRef: string | DocumentReference<R>,
   options?: RefOptions<T>
 ): DocumentReference<T> {
   const getFirestore = useFirestore(options);
   const db = typeof pathOrRef != 'string' ? pathOrRef.firestore : getFirestore();
 
-  const docRef = typeof pathOrRef == 'string' ? doc(db, pathOrRef) : pathOrRef;
-  const docRefT = options?.converter
-    ? docRef.withConverter(options.converter)
-    : (docRef.withConverter(null) as DocumentReference<T>);
+  const docRef =
+    typeof pathOrRef == 'string' ? (doc(db, pathOrRef) as DocumentReference<R>) : pathOrRef;
 
-  return useEqual(docRefT, refEqual);
+  let ref = docRef as DocumentReference<T>;
+  if (options) {
+    if (options.converter) {
+      ref = docRef.withConverter(options.converter);
+    } else if (options.converter === null) {
+      ref = docRef.withConverter(null) as DocumentReference<T>;
+    }
+  }
+
+  return useEqual(ref, refEqual);
 }

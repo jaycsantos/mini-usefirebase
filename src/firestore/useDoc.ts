@@ -55,11 +55,11 @@ import { useDocRef } from './useDocRef';
  * @group Firestore
  * @category Hooks
  */
-export function useDoc<T = DocumentData>(
-  pathOrRef: string | DocumentReference<T>,
+export function useDoc<T = DocumentData, R = DocumentData>(
+  pathOrRef: string | DocumentReference<R>,
   options?: RefOptions<T>
 ): RefResult<T, DocumentSnapshot<T>> {
-  const docRef = useDocRef<T>(pathOrRef, options);
+  const docRef = useDocRef<T, R>(pathOrRef, options);
 
   const results = useFirestoreGetter<T, DocumentReference<T>, DocumentSnapshot<T>>({
     from,

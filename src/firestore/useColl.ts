@@ -84,14 +84,14 @@ import { useFirestoreGetter } from './useFirestoreGetter';
  * @group Firestore
  * @category Hooks
  */
-export function useColl<T = DocumentData>(
-  pathOrQuery: Query | string,
+export function useColl<T = DocumentData, R = DocumentData>(
+  pathOrQuery: Query<R> | string,
   constraints?: QueryConstraint | QueryConstraint[],
   options?: RefOptions<T>
 ): RefResult<Array<T>, QuerySnapshot<T>> {
   options = Object.assign({ cache: RefCache.liveServer }, options ?? {});
 
-  const queryRef = useCollRef<T>(pathOrQuery, constraints, options);
+  const queryRef = useCollRef<T, R>(pathOrQuery, constraints ?? [], options);
 
   const results = useFirestoreGetter<T, Query<T>, QuerySnapshot<T>>({
     from,
