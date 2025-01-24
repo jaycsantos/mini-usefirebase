@@ -49,7 +49,6 @@ export function useFirestoreGetter<
     value: snapshot,
     error,
     isLoading,
-    setError,
     startAsync,
     retries,
     retry,
@@ -59,7 +58,7 @@ export function useFirestoreGetter<
   useEffect(() => {
     if (cache.startsWith(RefCache.liveServer) || cache == RefCache.oneCacheAndServer) {
       let unsub: () => void;
-      startAsync((setSnapshot) => {
+      startAsync((setSnapshot, setError) => {
         unsub = from.onSnapshot(
           ref,
           {
@@ -95,7 +94,7 @@ export function useFirestoreGetter<
       startAsync(() => promise);
       return () => cancel;
     }
-  }, [ref, from, cache, retries, setError, startAsync]);
+  }, [ref, from, cache, retries, startAsync]);
 
   return {
     snapshot,

@@ -1,55 +1,55 @@
-import { useCallback, useState, useTransition } from 'react';
+import { useCallback, useState } from 'react';
 
 export default function useAsyncState<T, E extends Error = Error>(options?: {
   initialValue?: T | null;
   initialError?: E | null;
 }) {
-  const [state, setState] = useState<{ value: T | null; error: E | null }>({
+  const [state, setState] = useState<{ value: T | null; error: E | null; isLoading: boolean }>({
     value: options?.initialValue ?? null,
     error: options?.initialError ?? null,
+    isLoading: false,
   });
-  const [isLoading, startTransition] = useTransition();
 
-  const setValue = useCallback(
-    (value: T | null) => startTransition(() => setState({ value, error: null })),
-    []
+  const _setValue = useCallback(
+    (value: T | null) => setState({ value, error: null, isLoading: false }),
+    [setState]
   );
 
-  const setError = useCallback((error: unknown) => {
-    startTransition(() =>
+  const _setError = useCallback(
+    (error: unknown) => {
       setState((old) => ({
         error: (error instanceof Error ? error : new Error(String(error))) as E,
         value: old.value,
         isLoading: false,
-      }))
-    );
-  }, []);
+      }));
+    },
+    [setState]
+  );
 
   const startAsync = useCallback(
-    async (
+    (
       action: (
-        setVal: typeof setValue,
-        setErr: typeof setError
-      ) => T | Promise<T> | void | Promise<void>
+        setValue: typeof _setValue,
+        setError: typeof _setError
+      ) => T | void | Promise<T> | Promise<void>
     ) => {
-      startTransition(async () => {
-        try {
-          const res = await action(setValue, setError);
-          const value = res instanceof Promise ? await res : res;
-          if (value !== undefined) setValue(value);
-        } catch (e) {
-          setError(e);
+      setState((old) => ({ ...old, isLoading: true }));
+      try {
+        const res = action(_setValue, _setError);
+        if (res instanceof Promise) {
+          res.then((val) => val !== undefined && _setValue(val)).catch(_setError);
+        } else if (res !== undefined) {
+          _setValue(res);
         }
-      });
+      } catch (e) {
+        _setError(e);
+      }
     },
-    [setValue, setError]
+    [_setValue, _setError]
   );
 
   return {
     ...state,
-    isLoading,
-    setValue,
-    setError,
     startAsync,
   };
 }
