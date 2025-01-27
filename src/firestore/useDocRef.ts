@@ -1,4 +1,4 @@
-import useEqual from '@/common/useEqual';
+import useDistinct from '@/common/useDistinct';
 import { doc, DocumentData, DocumentReference, refEqual } from 'firebase/firestore';
 import { RefOptions } from './types';
 import { useFirestore } from './useFirestore';
@@ -12,7 +12,7 @@ import { useFirestore } from './useFirestore';
  *
  * @template T - The type of document data if converter is used, defaults to DocumentData
  *
- * @param pathOrRef - String path to the document or a DocumentReference
+ * @param refOrPath - String path to the document or a DocumentReference
  * @param options - Hook options
  *
  * @returns A memoized DocumentReference instance. The same reference is returned
@@ -40,14 +40,16 @@ import { useFirestore } from './useFirestore';
  * @category Hooks
  */
 export function useDocRef<T = DocumentData, R = DocumentData>(
-  pathOrRef: string | DocumentReference<R>,
+  refOrPath: string | DocumentReference<R>,
   options?: RefOptions<T>
 ): DocumentReference<T> {
-  const getFirestore = useFirestore(options);
-  const db = typeof pathOrRef != 'string' ? pathOrRef.firestore : getFirestore();
-
+  options = Object.assign(
+    typeof refOrPath != 'string' ? { app: refOrPath.firestore.app } : {},
+    options ?? {}
+  );
+  const db = useFirestore(options);
   const docRef =
-    typeof pathOrRef == 'string' ? (doc(db, pathOrRef) as DocumentReference<R>) : pathOrRef;
+    typeof refOrPath == 'string' ? (doc(db, refOrPath) as DocumentReference<R>) : refOrPath;
 
   let ref = docRef as DocumentReference<T>;
   if (options) {
@@ -58,5 +60,5 @@ export function useDocRef<T = DocumentData, R = DocumentData>(
     }
   }
 
-  return useEqual(ref, refEqual);
+  return useDistinct(ref, refEqual);
 }

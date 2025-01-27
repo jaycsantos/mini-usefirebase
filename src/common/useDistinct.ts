@@ -14,7 +14,7 @@ import { useRef } from 'react';
  * @group Common
  * @category Hooks
  */
-export default function useEqual<T>(value: T, compare?: (a: T, b: T) => boolean): T {
+export default function useDistinct<T>(value: T, compare?: (a: T, b: T) => boolean): T {
   compare ??= Object.is;
   const ref = useRef<T>(value);
   if (!ref.current || !compare(ref.current, value)) {

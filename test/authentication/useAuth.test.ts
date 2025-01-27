@@ -22,14 +22,14 @@ describe('useAuth', () => {
   });
 
   it('should return the default auth instance when no options are provided', () => {
-    const { result } = renderHook(() => useAuth()());
+    const { result } = renderHook(() => useAuth());
     expect(getAuth).toHaveBeenCalled();
     expect(result.current).toBe(getAuth());
   });
 
   it('should return the auth instance for the provided app', () => {
     const customApp = initializeApp({ apiKey: 'another', projectId: 'another' }, 'another');
-    const { result } = renderHook(() => useAuth({ app: customApp })());
+    const { result } = renderHook(() => useAuth({ app: customApp }));
     // expect(getAuth).toHaveBeenCalledWith(customApp);
     expect(result.current).toBe(getAuth(customApp));
   });

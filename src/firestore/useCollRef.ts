@@ -1,4 +1,4 @@
-import useEqual from '@/common/useEqual';
+import useDistinct from '@/common/useDistinct';
 import {
   collection,
   type DocumentData,
@@ -15,7 +15,7 @@ import { useFirestore } from './useFirestore';
  *
  * @template T - The type of document data. Defaults to DocumentData if no converter is provided.
  *
- * @param refOrName - Collection path string or a Firestore Query
+ * @param refOrName - Collection path string or a Firestore Query or Collection instance
  * @param constraints - Single or an array of query constraints
  * @param options - Hook options
  *
@@ -46,9 +46,11 @@ export function useCollRef<T = DocumentData, R = DocumentData>(
   constraints?: QueryConstraint | QueryConstraint[],
   options?: RefOptions<T>
 ): Query<T> {
-  const getFirestore = useFirestore(options);
-  const db = typeof refOrName != 'string' ? refOrName.firestore : getFirestore();
-
+  options = Object.assign(
+    typeof refOrName != 'string' ? { app: refOrName.firestore.app } : {},
+    options ?? {}
+  );
+  const db = useFirestore(options);
   let queryRef = typeof refOrName == 'string' ? (collection(db, refOrName) as Query<R>) : refOrName;
 
   constraints = constraints ? (Array.isArray(constraints) ? constraints : [constraints]) : [];
@@ -62,5 +64,5 @@ export function useCollRef<T = DocumentData, R = DocumentData>(
       ref = queryRef.withConverter(null) as Query<T>;
     }
   }
-  return useEqual(ref, queryEqual);
+  return useDistinct(ref, queryEqual);
 }

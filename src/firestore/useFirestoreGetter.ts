@@ -29,6 +29,7 @@ export interface FirestoreGetters<
     onNext: (snapshot: Snap) => void,
     onError: (error: Error) => void
   ) => () => void;
+  compare?: (a: Snap, b: Snap) => boolean;
 }
 
 /** @internal */
@@ -52,7 +53,7 @@ export function useFirestoreGetter<
     startAsync,
     retries,
     retry,
-  } = useRetriableAsyncState<Snap | null>();
+  } = useRetriableAsyncState<Snap>();
   const cache = options.cache ?? RefCache.one;
 
   useEffect(() => {
@@ -91,7 +92,7 @@ export function useFirestoreGetter<
           }
         })()
       );
-      startAsync(() => promise);
+      startAsync(() => promise, from.compare);
       return () => cancel;
     }
   }, [ref, from, cache, retries, startAsync]);

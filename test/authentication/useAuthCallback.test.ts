@@ -5,13 +5,13 @@ import { delay } from 'helper';
 
 describe('useAuthCallback', () => {
   const mockCallback = vi.fn(async (auth: Auth, ...args: Array<string>) => {
-    await delay(10);
+    await delay(1);
     return args.join('_');
   });
 
   beforeAll(() => {
     vi.mock('@/authentication/useAuth', () => ({
-      useAuth: vi.fn(() => () => ({
+      useAuth: vi.fn(() => ({
         authStateReady: vi.fn(async () => true),
       })),
     }));

@@ -3,8 +3,15 @@ import { renderHook } from '@testing-library/react';
 import { FirebaseApp } from '@firebase/app-compat';
 import { describe, expect, it } from 'vitest';
 import { FirebaseAppContext, useFirebase } from '../src/useFirebase';
+import { deleteApp, getApps, initializeApp } from 'firebase/app';
 
 describe('useFirebase', () => {
+  afterEach(async () => {
+    for (const app of getApps()) {
+      await deleteApp(app);
+    }
+  });
+
   it('should return the Firebase app instance from context', () => {
     const mockApp = { name: 'mockApp' } as FirebaseApp;
     const wrapper = ({ children }: { children: React.ReactNode }) => (
@@ -12,11 +19,16 @@ describe('useFirebase', () => {
     );
 
     const { result } = renderHook(() => useFirebase(), { wrapper });
-    expect(result.current()).toBe(mockApp);
+    expect(result.current).toBe(mockApp);
   });
 
-  it('should return undefined if used outside of FirebaseAppContext', () => {
+  it('should throw error if no default firebase app', () => {
+    expect(() => renderHook(() => useFirebase())).toThrowError();
+  });
+
+  it('should return default firebase app', () => {
+    const app = initializeApp({ apiKey: 'mock', projectId: 'mock' });
     const { result } = renderHook(() => useFirebase());
-    expect(result.current()).toBeUndefined();
+    expect(result.current).toBe(app);
   });
 });

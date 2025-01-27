@@ -1,10 +1,12 @@
 import cancellable from '@/utils/cancellable';
 import useRetriableAsyncState from '@/common/useRetriableAsyncState';
-import useEqual from '@/common/useEqual';
+import useDistinct from '@/common/useDistinct';
 import {
   AggregateQuerySnapshot,
+  aggregateQuerySnapshotEqual,
   type AggregateSpec,
   type AggregateSpecData,
+  DocumentData,
   getAggregateFromServer,
   Query,
   queryEqual,
@@ -55,15 +57,15 @@ export function useAggr<T extends AggregateSpec>(
     isLoading,
     retries,
     retry,
-  } = useRetriableAsyncState<AggregateQuerySnapshot<T> | null>();
+  } = useRetriableAsyncState<AggregateQuerySnapshot<T>>();
 
-  const queryRef = useEqual(query, queryEqual);
+  const queryRef = useDistinct(query, queryEqual);
 
   useEffect(() => {
     const { promise, cancel } = cancellable<AggregateQuerySnapshot<T>>(
-      getAggregateFromServer(queryRef, aggregate)
+      getAggregateFromServer<T, DocumentData, DocumentData>(queryRef, aggregate)
     );
-    startAsync(() => promise);
+    startAsync(() => promise, aggregateQuerySnapshotEqual<T, DocumentData, DocumentData>);
     return () => cancel();
   }, [queryRef, aggregate, retries, startAsync]);
 

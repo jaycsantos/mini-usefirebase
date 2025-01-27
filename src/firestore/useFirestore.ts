@@ -1,13 +1,14 @@
 import { Prettify, WithFirebaseApp } from '@/common/types';
 import { useFirebase } from '@/useFirebase';
 import { Firestore, getFirestore } from 'firebase/firestore';
-import { useCallback } from 'react';
 
 /**
  * React hook to initialize and access Firebase Firestore
  *
- * @param [options] - Hook options, can pass app or db instance
- * @returns A function that returns the {@link https://firebase.google.com/docs/reference/js/firebase.firestore | Firestore} database
+ * @param options - Optional configuration object
+ * @param options.app - Optional Firebase App instance or app name. If not provided, uses the default Firebase App
+ *
+ * @returns The {@link https://firebase.google.com/docs/reference/js/firebase.firestore | Firestore} database instance
  *
  * @example
  * ```tsx
@@ -15,14 +16,13 @@ import { useCallback } from 'react';
  * const db = getDb();
  * ```
  *
- * @remarks
- * - useFirebase hook is used if options is not provided
+ * @remarks uses useFirebase hook to resolve the firebase app instance
  *
  * @group Firestore
  * @category Hooks
  */
-export function useFirestore(options?: Prettify<Partial<WithFirebaseApp>>): () => Firestore {
-  const getApp = useFirebase();
-  const app = options?.app ?? getApp();
-  return useCallback(() => (app ? getFirestore(app) : getFirestore()), [app]);
+export function useFirestore(options?: Prettify<Partial<WithFirebaseApp>>): Firestore {
+  const app = useFirebase(options);
+  // meh, getFirestore does not have overload that support both `FirebaseApp|undefined`
+  return app ? getFirestore(app) : getFirestore();
 }

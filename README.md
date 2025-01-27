@@ -18,15 +18,15 @@ npm install mini-usefirebase
 
 ## Usage
 
-Initialize your firebase app
+Initialize your firebase app normally
 
 ```typescript
 import { initializeApp } from 'firebase/app';
 //...
-const app = initializeApp(firebaseConfig);
+initializeApp(firebaseConfig);
 ```
 
-You can immediately use the hooks
+Now use the hooks. That easy
 
 ```typescript
 import { useDoc } from 'mini-usefirebase';
@@ -40,18 +40,18 @@ export function CityComponent({ id }) {
 
 Note: This assumes that you don't set the app's name to something else and it will use fibase default `[DEFAULT]`.
 
-### Multiple firebase instance or custom app name
+### Multiple firebase instance and/or custom app name
 
-If you have named your app or use multiple firebase app instances
+If you have named your firebase app differently or use multiple firebase app instances, you have these options
 
 ```typescript
 const app = initializeApp(firebaseConfig, 'myApp');
 ```
 
-then you need to define it into context, so that the hooks can find it
+Define it into context, so that the hooks can find it up the hierarchy
 
 ```typescript
-export function MyFirebaseProvider({children}){
+export function OtherFirebaseProvider({children}){
   return (
     <FirebaseAppContext value={{app}}>
       {children}
@@ -60,10 +60,18 @@ export function MyFirebaseProvider({children}){
 }
 ```
 
-or pass the firebase app as an option to the hook directly
+Or pass the firebase app as an option to the hook directly
 
 ```typescript
+import { app } from '@/firebase';
+//...
 const { data: list, retry } = useColl('posts', where('published', '==', true), { app });
+```
+
+Or pass the firebase app name used
+
+```typescript
+const { data: list, retry } = useColl('users', [], { app: 'custom-firebase' });
 ```
 
 ## API Reference

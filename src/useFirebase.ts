@@ -1,6 +1,6 @@
-import { WithFirebaseApp } from '@/common/types';
-import { FirebaseApp } from '@firebase/app-compat';
-import { createContext, useCallback, useContext } from 'react';
+import { Prettify, WithFirebaseApp } from '@/common/types';
+import { FirebaseApp, getApp } from 'firebase/app';
+import { createContext, useContext } from 'react';
 
 export type FirebaseAppContextType = {
   app: FirebaseApp;
@@ -38,6 +38,9 @@ export const FirebaseAppContext = createContext<WithFirebaseApp | null>(null);
  * This hook must be used within a component that is wrapped by a FirebaseAppContext.Provider.
  *
  * This is used as fallback for firebase hooks if app is not explicitly provided.
+ *
+ * @param options - Optional configuration object
+ * @param options.app - Optional Firebase App instance or app name. If not provided, uses the default Firebase App
  *
  * @returns A function that returns the Firebase app instance.
  *
@@ -77,8 +80,8 @@ export const FirebaseAppContext = createContext<WithFirebaseApp | null>(null);
  * @category Hooks
  */
 
-export function useFirebase(): () => FirebaseApp | undefined {
+export function useFirebase(options?: Prettify<Partial<WithFirebaseApp>>): FirebaseApp | undefined {
   const appData = useContext(FirebaseAppContext);
-  const app = appData?.app;
-  return useCallback(() => app, [app]);
+  const app = options?.app ?? appData?.app;
+  return app ? (typeof app == 'string' ? getApp(app) : app) : getApp();
 }

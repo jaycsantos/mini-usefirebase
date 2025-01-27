@@ -37,7 +37,7 @@ import { useAuth } from './useAuth';
 export function useAuthState(
   options?: Prettify<AuthOptions & { onChange?: (user: User | null) => Promise<void> | void }>
 ): AsyncUser {
-  const auth = useAuth(options)();
+  const auth = useAuth(options);
 
   const { value: user, isLoading, error, startAsync } = useAsyncState<User>();
   const onChange = options?.onChange;

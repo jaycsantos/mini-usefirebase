@@ -1,9 +1,9 @@
+import { Prettify } from '@/common/types';
 import useAsyncState from '@/common/useAsyncState';
 import { User } from 'firebase/auth';
 import { useCallback } from 'react';
 import { AuthOptions } from './types';
 import { useAuth } from './useAuth';
-import { Prettify } from '@/common/types';
 
 /**
  * A hook that wraps Firebase Auth User operations with state management and error handling.
@@ -55,7 +55,7 @@ export function useAuthUserCallback<R, A extends Array<unknown>>(
   callback: (user: User, ...args: A) => PromiseLike<R> | R,
   options?: Prettify<AuthOptions & { onResult?: (result: R | undefined, error?: unknown) => void }>
 ) {
-  const auth = useAuth(options)();
+  const auth = useAuth(options);
   const onResult = options?.onResult;
   const { value, error, isLoading, startAsync } = useAsyncState<R>();
 

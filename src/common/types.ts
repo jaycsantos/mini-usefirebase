@@ -1,6 +1,6 @@
-import { FirebaseApp as FirebaseAppCompat } from '@firebase/app-compat';
+import { FirebaseApp } from 'firebase/app';
 
-// export type PartialIf<T, P, U> = T extends P ? Partial<U> : Required<U>;
+export type PartialIf<T, P, U> = T extends P ? Partial<U> : Required<U>;
 
 // export type Optional<T, Keys extends keyof T> = T & Partial<Pick<T, Keys>>;
 
@@ -12,8 +12,8 @@ import { FirebaseApp as FirebaseAppCompat } from '@firebase/app-compat';
  * @ignore
  */
 export type WithFirebaseApp = {
-  /** The Firebase application instance */
-  app: FirebaseAppCompat;
+  /** The Firebase application instance or name of the app */
+  app: FirebaseApp | string;
 };
 
 /**
