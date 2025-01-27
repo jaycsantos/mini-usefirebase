@@ -9,6 +9,7 @@ export * from './firestore/useCollRef';
 export * from './firestore/useDoc';
 export * from './firestore/useDocRef';
 export * from './firestore/useAggr';
+export * from './firestore/useSnapshot';
 
 export * from './authentication/types';
 export * from './authentication/useAuth';
