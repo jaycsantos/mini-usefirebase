@@ -43,6 +43,9 @@ import { DocumentSnapshot, QueryDocumentSnapshot, snapshotEqual } from 'firebase
  * ))}
  * ```
  * ItemComponent only re-renders when the snapshot content changes even if querySnapshot changes.
+ *
+ * @group Firestore
+ * @category Hooks
  */
 export function useSnapshot<T extends DocumentSnapshot | QueryDocumentSnapshot>(snapshot: T): T {
   return useDistinct(snapshot, snapshotEqual);
