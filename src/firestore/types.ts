@@ -27,6 +27,16 @@ export enum RefCache {
   liveServerMetadata = 'liveServerMetadata',
 
   /**
+   * Subscribes to real-time changes from cache only.
+   */
+  liveCache = 'liveCache',
+
+  /**
+   * Subscribes to real-time changes from cache only including metadata changes.
+   */
+  liveCacheMetadata = 'liveCacheMetadata',
+
+  /**
    * Fetch from server first, falls back to cache if server unavailable
    * Default behavior for most Firestore operations.
    */

@@ -57,13 +57,14 @@ export function useFirestoreGetter<
   const cache = options.cache ?? RefCache.one;
 
   useEffect(() => {
-    if (cache.startsWith(RefCache.liveServer) || cache == RefCache.oneCacheAndServer) {
+    if (cache.startsWith('live') || cache == RefCache.oneCacheAndServer) {
       let unsub: () => void;
       startAsync((setSnapshot, setError) => {
         unsub = from.onSnapshot(
           ref,
           {
-            includeMetadataChanges: cache == RefCache.liveServerMetadata,
+            includeMetadataChanges: cache.endsWith('Metadata'),
+            source: cache.startsWith(RefCache.liveCache) ? 'cache' : 'default',
           },
           (snapshot) => {
             setSnapshot(snapshot);
