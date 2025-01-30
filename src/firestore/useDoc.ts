@@ -22,8 +22,8 @@ import { useDocRef } from './useDocRef';
  * @param options - Hook options
  *
  * @returns Object containing:
- * - `snapshot` - The Firestore QuerySnapshot
- * - `data` - Array of document data
+ * - `snapshot` - Memoized firestore DocumentSnapshot
+ * - `data` - document data getter
  * - `isLoading` - Loading state
  * - `error` - Any error that occurred
  * - `retry()` - A function to retry the operation
