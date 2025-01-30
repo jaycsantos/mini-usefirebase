@@ -1,5 +1,10 @@
 # Change Log
 
+## 0.3.1
+
+- added [RefCache](https://github.com/jaycsantos/mini-usefirebase/wiki/Enumeration.RefCache#enumeration-members) liveCache & liveCacheMetadata
+- refactor firestore hooks to improve code
+
 ## 0.3.0
 
 - [useFirebase](https://github.com/jaycsantos/mini-usefirebase/wiki/Function.useFirebase), [useFirestore](https://github.com/jaycsantos/mini-usefirebase/wiki/Function.useFirestore) & [useAuth](https://github.com/jaycsantos/mini-usefirebase/wiki/Function.useAuth) now directly return instances -- **BREAKING CHANGE**
