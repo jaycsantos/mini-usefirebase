@@ -6,7 +6,6 @@ import {
   getDocFromCache,
   getDocFromServer,
   onSnapshot,
-  snapshotEqual,
   type DocumentData,
 } from 'firebase/firestore';
 import { RefCache, RefOptions, RefResult } from './types';
@@ -81,5 +80,4 @@ const from = {
   getCache: getDocFromCache,
   getServer: getDocFromServer,
   onSnapshot,
-  compare: snapshotEqual,
-};
+} as const;

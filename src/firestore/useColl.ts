@@ -24,7 +24,7 @@ import { useFirestoreGetter } from './useFirestoreGetter';
  * @param options - Hook options
  *
  * @returns Object containing:
- * - `snapshot` - The Firestore QuerySnapshot
+ * - `snapshot` - Memoized firestore QuerySnapshot. But each QueryDocumentSnapshot is not memoized.
  * - `data` - Array of document data
  * - `isLoading` - Loading state
  * - `error` - Any error that occurred
@@ -112,4 +112,4 @@ const from = {
   getCache: getDocsFromCache,
   getServer: getDocsFromServer,
   onSnapshot,
-};
+} as const;

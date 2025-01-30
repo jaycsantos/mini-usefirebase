@@ -5,6 +5,8 @@ import {
   DocumentSnapshot,
   Query,
   QuerySnapshot,
+  snapshotEqual,
+  SnapshotListenOptions,
 } from 'firebase/firestore';
 import { useEffect } from 'react';
 import useRetriableAsyncState from '../common/useRetriableAsyncState';
@@ -25,11 +27,10 @@ export interface FirestoreGetters<
   getServer: (src: Ref) => Promise<Snap>;
   onSnapshot: (
     src: Ref,
-    options: { includeMetadataChanges?: boolean; source?: 'default' | 'cache' },
+    options: SnapshotListenOptions,
     onNext: (snapshot: Snap) => void,
     onError: (error: Error) => void
   ) => () => void;
-  compare?: (a: Snap, b: Snap) => boolean;
 }
 
 /** @internal */
@@ -93,7 +94,7 @@ export function useFirestoreGetter<
           }
         })()
       );
-      startAsync(() => promise, from.compare);
+      startAsync(() => promise, snapshotEqual);
       return () => cancel;
     }
   }, [ref, from, cache, retries, startAsync]);
