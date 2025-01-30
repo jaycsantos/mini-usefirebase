@@ -1,14 +1,24 @@
 import { Prettify, WithAsyncState, WithFirebaseApp } from '@/common/types';
 import { Auth, User } from 'firebase/auth';
 
-export type WithAuth = {
-  auth: Auth;
-};
+/**
+ * @inline
+ * @ignore
+ */
+export type AuthOptions = Prettify<
+  WithFirebaseApp & {
+    /** Auth instance */
+    auth?: Auth;
+  }
+>;
 
-export type AuthOptions = Prettify<Partial<WithAuth & WithFirebaseApp>>;
-
+/**
+ * @inline
+ * @ignore
+ */
 export type AsyncUser = Prettify<
   WithAsyncState & {
+    /** Auth user instance */
     user: User | null;
   }
 >;

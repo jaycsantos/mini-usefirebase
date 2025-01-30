@@ -1,4 +1,4 @@
-import { WithFirebaseApp, WithRetryAsyncState, Prettify } from '@/common/types';
+import { Prettify, WithFirebaseApp, WithRetryAsyncState } from '@/common/types';
 import { Firestore, DocumentData, FirestoreDataConverter } from 'firebase/firestore';
 
 /**
@@ -65,11 +65,13 @@ export enum RefCache {
 /**
  * Anything that has reference to a Firestore instance.
  * @interface WithFirestore
+ *
+ * @inline
  * @ignore
  */
-export type WithFirestore = {
-  /** The Firestore instance */
-  db: Firestore;
+export type WithFirestore = WithFirebaseApp & {
+  /** Firestore instance */
+  db?: Firestore;
 };
 
 /**
@@ -80,7 +82,7 @@ export type WithFirestore = {
  * @category Interfaces
  */
 export type RefOptions<T = DocumentData> = Prettify<
-  Partial<WithFirebaseApp & WithFirestore> & {
+  WithFirestore & {
     /** Data converter for the document reference. */
     converter?: FirestoreDataConverter<T>;
     /** The cache strategy to use for listening or fetching Firestore data. Defaults to "liveServer" */

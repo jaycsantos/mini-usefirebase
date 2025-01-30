@@ -11,8 +11,10 @@ import { useAuth } from './useAuth';
  * This hook listens to Firebase authentication state changes and returns the current user,
  * loading state, and any authentication errors that occur.
  *
- * @param options - auth options
+ * @param options
  * @param options.onChange - callback when the auth state changes
+ * @param options.app
+ * @param options.auth
  *
  * @returns An object containing:
  * - user: The current User object or null if not authenticated

@@ -1,12 +1,12 @@
-import { Prettify, WithFirebaseApp } from '@/common/types';
 import { useFirebase } from '@/useFirebase';
 import { Auth, getAuth } from 'firebase/auth';
+import { AuthOptions } from './types';
 
 /**
  * A hook that provides access to Firebase Authentication.
  *
- * @param options - Optional configuration object that can include a Firebase App instance
- * @param options.app - Optional Firebase App instance or app name. If not provided, uses the default Firebase App
+ * @param options
+ * @param options.app - Firebase App instance or app name. If not provided, uses the default Firebase App
  * @returns A function that returns the Firebase Auth instance
  *
  * @example
@@ -32,9 +32,9 @@ import { Auth, getAuth } from 'firebase/auth';
  * @group Authentication
  * @category Hooks
  */
-export function useAuth(options?: Prettify<Partial<WithFirebaseApp>>): Auth {
-  const app = useFirebase(options);
-  return getAuth(app);
+export function useAuth(options?: AuthOptions): Auth {
+  const app = useFirebase(Object.assign({ app: options?.auth?.app }, options ?? {}));
+  return options?.auth ?? getAuth(app);
 }
 
 /**

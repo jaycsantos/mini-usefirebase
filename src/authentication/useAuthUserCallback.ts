@@ -16,8 +16,10 @@ import { useAuth } from './useAuth';
  *
  * @param callback - A function that takes Firebase Auth User instance and additional arguments,
  *                  and returns a promise or value
- * @param options - auth options
+ * @param options
  * @param options.onResult - Callback when the operation completes
+ * @param options.app
+ * @param options.auth
  *
  * @returns An object containing:
  * - invoke: Function to execute the auth operation

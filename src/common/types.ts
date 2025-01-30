@@ -12,8 +12,8 @@ export type PartialIf<T, P, U> = T extends P ? Partial<U> : Required<U>;
  * @ignore
  */
 export type WithFirebaseApp = {
-  /** The Firebase application instance or name of the app */
-  app: FirebaseApp | string;
+  /** Firebase App instance or app name */
+  app?: FirebaseApp | string;
 };
 
 /**
@@ -40,12 +40,10 @@ export type WithAsyncState = {
  * @inline
  * @ignore
  */
-export type WithRetryAsyncState = Prettify<
-  WithAsyncState & {
-    /** Forces the operation to retry. Clears any previous error and sets isLoading to true. */
-    retry: () => void;
-  }
->;
+export type WithRetryAsyncState = WithAsyncState & {
+  /** Forces the operation to retry. Clears any previous error and sets isLoading to true. */
+  retry: () => void;
+};
 
 /**
  * VSCode expand type alias

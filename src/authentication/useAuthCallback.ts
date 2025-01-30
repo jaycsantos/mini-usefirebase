@@ -15,9 +15,11 @@ import { useAuth } from './useAuth';
  * @template A - Array type for the callback arguments
  *
  * @param callback - A function that takes Firebase Auth instance and additional arguments,
- *                  and can be void or return a promise or value
- * @param options - auth options
+ *                  and can return a promise, value or void
+ * @param options
  * @param options.onResult - Callback when the operation completes
+ * @param options.app
+ * @param options.auth
  *
  * @returns An object containing:
  * - invoke: Function to execute the auth operation. Calling invoke while isLoading will do nothing.
@@ -53,7 +55,11 @@ import { useAuth } from './useAuth';
  */
 export function useAuthCallback<R, A extends Array<unknown>>(
   callback: (auth: Auth, ...args: A) => PromiseLike<R> | R,
-  options?: Prettify<AuthOptions & { onResult?: (result: R | undefined, error?: unknown) => void }>
+  options?: Prettify<
+    AuthOptions & {
+      onResult?: (result: R | undefined, error?: unknown) => void;
+    }
+  >
 ) {
   const auth = useAuth(options);
   const onResult = options?.onResult;

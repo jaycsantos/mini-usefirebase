@@ -1,6 +1,6 @@
-import { Prettify, WithFirebaseApp } from '@/common/types';
 import { useFirebase } from '@/useFirebase';
 import { Firestore, getFirestore } from 'firebase/firestore';
+import { WithFirestore } from './types';
 
 /**
  * React hook to initialize and access Firebase Firestore
@@ -21,8 +21,8 @@ import { Firestore, getFirestore } from 'firebase/firestore';
  * @group Firestore
  * @category Hooks
  */
-export function useFirestore(options?: Prettify<Partial<WithFirebaseApp>>): Firestore {
-  const app = useFirebase(options);
+export function useFirestore(options?: WithFirestore): Firestore {
+  const app = useFirebase(Object.assign({ app: options?.db?.app }, options ?? {}));
   // meh, getFirestore does not have overload that support both `FirebaseApp|undefined`
-  return app ? getFirestore(app) : getFirestore();
+  return options?.db ?? (app ? getFirestore(app) : getFirestore());
 }
