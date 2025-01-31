@@ -1,15 +1,15 @@
 import { act, renderHook, waitFor } from '@testing-library/react';
 import { RefCache } from '@/firestore/types';
 import { useColl } from '@/firestore/useColl';
-import { admin, db } from './helpers';
+import { admin, firestore } from './helpers';
 
 describe('useColl', () => {
   const collName = 'useColl';
   const data: Array<{ value: number }> = [];
 
   beforeAll(async () => {
-    const collRef = admin.db.collection(collName);
-    const batch = admin.db.batch();
+    const collRef = admin.firestore.collection(collName);
+    const batch = admin.firestore.batch();
     for (let i = 0; i < 2; i++) {
       const payload = { value: i };
       data.push(payload);
@@ -22,7 +22,7 @@ describe('useColl', () => {
 
   it('should return snapshot, data, isLoading, and error', async () => {
     const { result } = renderHook(() =>
-      useColl(collName, [], { firestore: db, cache: RefCache.one })
+      useColl(collName, [], { firestore: firestore, cache: RefCache.one })
     );
 
     await waitFor(() => {
@@ -38,7 +38,7 @@ describe('useColl', () => {
   });
 
   it('should listen to real-time updates as default', async () => {
-    const { result } = renderHook(() => useColl(collName, [], { firestore: db }));
+    const { result } = renderHook(() => useColl(collName, [], { firestore: firestore }));
 
     await waitFor(() => {
       expect(result.current.isLoading).toBe(false);
@@ -50,7 +50,7 @@ describe('useColl', () => {
     const payload = { value: data.length };
 
     await act(async () => {
-      await admin.db.doc(`${collName}/${id}`).create(payload);
+      await admin.firestore.doc(`${collName}/${id}`).create(payload);
       data.push(payload);
     });
 
@@ -63,7 +63,7 @@ describe('useColl', () => {
 
   it('should be retriable', async () => {
     const { result } = renderHook(() =>
-      useColl(collName, [], { firestore: db, cache: RefCache.one })
+      useColl(collName, [], { firestore: firestore, cache: RefCache.one })
     );
 
     await waitFor(() => {

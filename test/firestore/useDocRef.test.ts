@@ -2,11 +2,11 @@ import { renderHook } from '@testing-library/react';
 import { doc, DocumentData, DocumentReference } from 'firebase/firestore';
 import { describe, expect, it } from 'vitest';
 import { useDocRef } from '../../src/firestore/useDocRef';
-import { db } from './helpers';
+import { firestore } from './helpers';
 
 describe('useDocRef', () => {
   it('should memoize docRef from path', async () => {
-    const { result, rerender } = renderHook(() => useDocRef('test/1', { firestore: db }));
+    const { result, rerender } = renderHook(() => useDocRef('test/1', { firestore: firestore }));
 
     const docRef = result.current;
     rerender();
@@ -17,15 +17,15 @@ describe('useDocRef', () => {
     const { result, rerender } = renderHook<
       DocumentReference,
       Parameters<typeof useDocRef<DocumentData>>
-    >((props) => useDocRef(...props), { initialProps: ['test/1', { firestore: db }] });
+    >((props) => useDocRef(...props), { initialProps: ['test/1', { firestore: firestore }] });
 
     const docRef = result.current;
-    rerender(['test/2', { firestore: db }]);
+    rerender(['test/2', { firestore: firestore }]);
     expect(result.current).not.toBe(docRef);
   });
 
   it('should memoize docRef from another DocumentReference', async () => {
-    const { result, rerender } = renderHook(() => useDocRef(doc(db, 'test/1')));
+    const { result, rerender } = renderHook(() => useDocRef(doc(firestore, 'test/1')));
 
     const docRef = result.current;
     rerender();
@@ -35,11 +35,11 @@ describe('useDocRef', () => {
   it('should update docRef when props DocumentReference changes', async () => {
     const { result, rerender } = renderHook<DocumentReference, DocumentReference>(
       (props) => useDocRef(props),
-      { initialProps: doc(db, 'test/1') }
+      { initialProps: doc(firestore, 'test/1') }
     );
 
     const docRef = result.current;
-    rerender(doc(db, 'test/2'));
+    rerender(doc(firestore, 'test/2'));
     expect(result.current).not.toBe(docRef);
   });
 });

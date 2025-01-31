@@ -2,7 +2,7 @@ import { act, renderHook, waitFor } from '@testing-library/react';
 import { afterAll, describe, expect, it } from 'vitest';
 import { RefCache } from '../../src/firestore/types';
 import { useDoc } from '../../src/firestore/useDoc';
-import { admin, db } from './helpers';
+import { admin, firestore } from './helpers';
 
 describe('useDoc', () => {
   const collName = 'useDoc';
@@ -13,9 +13,11 @@ describe('useDoc', () => {
     const path = `${collName}/get`;
     const payload = { name: 'get' };
 
-    await admin.db.doc(path).set(payload);
+    await admin.firestore.doc(path).set(payload);
 
-    const { result } = renderHook(() => useDoc(path, { firestore: db, cache: RefCache.one }));
+    const { result } = renderHook(() =>
+      useDoc(path, { firestore: firestore, cache: RefCache.one })
+    );
 
     expect(result.current.isLoading).toBe(true);
 
@@ -27,18 +29,19 @@ describe('useDoc', () => {
     });
   });
 
+
   it('should listen to real-time updates as default', async () => {
     const path = `${collName}/realtime`;
     const payload = { count: 1 };
-    await admin.db.doc(path).set(payload);
+    await admin.firestore.doc(path).set(payload);
 
-    const { result } = renderHook(() => useDoc(path, { firestore: db }));
+    const { result } = renderHook(() => useDoc(path, { firestore: firestore }));
 
     await waitFor(() => {
       expect(result.current.data).toEqual(payload);
     });
 
-    await act(() => admin.db.doc(path).update('count', admin.FieldValue.increment(1)));
+    await act(() => admin.firestore.doc(path).update('count', admin.FieldValue.increment(1)));
 
     expect(result.current.isLoading).toBe(false);
     expect(result.current.error).toBeNull();
@@ -48,7 +51,7 @@ describe('useDoc', () => {
   });
 
   it('should get non-existing doc', async () => {
-    const { result } = renderHook(() => useDoc(`${collName}/no-exist`, { firestore: db }));
+    const { result } = renderHook(() => useDoc(`${collName}/no-exist`, { firestore: firestore }));
 
     await waitFor(() => {
       expect(result.current.isLoading).toBe(false);
@@ -61,7 +64,7 @@ describe('useDoc', () => {
   it('should handle no permission', async () => {
     for (const cache of [RefCache.liveServer, RefCache.one]) {
       const { result } = renderHook(() =>
-        useDoc('invalid/no-permission', { firestore: db, cache })
+        useDoc('invalid/no-permission', { firestore: firestore, cache })
       );
 
       await waitFor(() => {
@@ -75,21 +78,21 @@ describe('useDoc', () => {
   it('should only get local cache', async () => {
     const path = `${collName}/cache-only`;
     const payload = { cached: 'old' };
-    await admin.db.doc(path).set(payload);
+    await admin.firestore.doc(path).set(payload);
 
     // set local cache
     const { result } = renderHook(() =>
-      useDoc(path, { firestore: db, cache: RefCache.oneCacheOrServer })
+      useDoc(path, { firestore: firestore, cache: RefCache.oneCacheOrServer })
     );
     await waitFor(() => {
       expect(result.current.isLoading).toBe(false);
       expect(result.current.data).toEqual(payload);
     });
 
-    await act(() => admin.db.doc(path).set({ cached: 'new' }));
+    await act(() => admin.firestore.doc(path).set({ cached: 'new' }));
 
     const { result: offline } = renderHook(() =>
-      useDoc(path, { firestore: db, cache: RefCache.oneCache })
+      useDoc(path, { firestore: firestore, cache: RefCache.oneCache })
     );
     await waitFor(() => {
       expect(offline.current.isLoading).toBe(false);
@@ -101,7 +104,7 @@ describe('useDoc', () => {
 
   it('should handle unavailable cache-only', async () => {
     const { result } = renderHook(() =>
-      useDoc(`${collName}/no-cache`, { firestore: db, cache: RefCache.oneCache })
+      useDoc(`${collName}/no-cache`, { firestore: firestore, cache: RefCache.oneCache })
     );
     expect(result.current.isLoading).toBe(true);
 
@@ -115,8 +118,8 @@ describe('useDoc', () => {
   it('should get local cache and can skip server', async () => {
     const path = `${collName}/cache-or-server`;
     const payload = { cached: 'old' };
-    const options = { db, cache: RefCache.oneCacheOrServer };
-    await admin.db.doc(path).set(payload);
+    const options = { firestore, cache: RefCache.oneCacheOrServer };
+    await admin.firestore.doc(path).set(payload);
 
     const { result: server } = renderHook(() => useDoc(path, options));
 
@@ -128,7 +131,7 @@ describe('useDoc', () => {
     });
 
     // set live data to be different
-    await act(() => admin.db.doc(path).update('cached', 'new'));
+    await act(() => admin.firestore.doc(path).update('cached', 'new'));
 
     const { result } = renderHook(() => useDoc(path, options));
 
@@ -145,16 +148,18 @@ describe('useDoc', () => {
     const path = `${collName}/retry`;
     const payload = { count: 0 };
 
-    await admin.db.doc(path).set(payload);
+    await admin.firestore.doc(path).set(payload);
 
-    const { result } = renderHook(() => useDoc(path, { firestore: db, cache: RefCache.one }));
+    const { result } = renderHook(() =>
+      useDoc(path, { firestore: firestore, cache: RefCache.one })
+    );
     await waitFor(() => {
       expect(result.current.data).toEqual(payload);
       expect(result.current.isLoading).toBe(false);
     });
 
     await act(async () => {
-      await admin.db.doc(path).update('count', admin.FieldValue.increment(1));
+      await admin.firestore.doc(path).update('count', admin.FieldValue.increment(1));
       result.current.retry();
     });
 

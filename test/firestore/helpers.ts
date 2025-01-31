@@ -7,20 +7,20 @@ import {
 } from 'firebase/firestore';
 import { adminApp, app } from '../helper';
 
-export const db = initializeFirestore(app, { localCache: memoryLocalCache() });
+export const firestore = initializeFirestore(app, { localCache: memoryLocalCache() });
 
 const [host, port] = process.env.FIRESTORE_EMULATOR_HOST?.split(':') ?? ['localhost', '8080'];
-connectFirestoreEmulator(db, host, parseInt(port));
+connectFirestoreEmulator(firestore, host, parseInt(port));
 
-const adminDb = initializeAdminFirestore(adminApp);
+const adminFirestore = initializeAdminFirestore(adminApp);
 
 export const admin = {
   app: adminApp,
-  db: adminDb,
+  firestore: adminFirestore,
   ...firestoreAdmin,
   async deleteCollection(collectionName: string): Promise<void> {
-    const collRef = adminDb.collection(collectionName);
-    const batch = adminDb.batch();
+    const collRef = adminFirestore.collection(collectionName);
+    const batch = adminFirestore.batch();
     const snap = await collRef.get();
     for (const { ref } of snap.docs) {
       batch.delete(ref);
