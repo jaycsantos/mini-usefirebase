@@ -38,7 +38,7 @@ export function CityComponent({ id }) {
 }
 ```
 
-Note: This assumes that you don't set the app's name to something else and it will use fibase default `[DEFAULT]`.
+Note: This assumes that you don't set the app's name to something else and it will use firebase default `[DEFAULT]`.
 
 ### Multiple firebase instance and/or custom app name
 
@@ -76,7 +76,11 @@ const { data: list, retry } = useColl('users', [], { app: 'custom-firebase' });
 
 ## API Reference
 
-See [https://github.com/jaycsantos/mini-usefirebase/wiki/globals](https://github.com/jaycsantos/mini-usefirebase/wiki/globals)
+See [Wiki](https://github.com/jaycsantos/mini-usefirebase/wiki/globals)
+
+## Changes
+
+See [CHANGELOG.md](https://github.com/jaycsantos/mini-usefirebase/blob/main/CHANGELOG.md)
 
 ## Feature Roadmap
 
@@ -86,3 +90,7 @@ See [https://github.com/jaycsantos/mini-usefirebase/wiki/globals](https://github
 - [ ] useDatabase
 - [ ] useFunctions
 - [ ] useStorage
+
+## Support
+
+Liking this? ⭐ it and/or hit me with a message.
