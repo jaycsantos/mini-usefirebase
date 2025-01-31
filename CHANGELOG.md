@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.4.1
+
+- fix useSnapshot to support nullable path/ref
+
 ## 0.4.0
 
 - Rename firestore options to use `firestore` instead of `db`. -- **BREAKING CHANGE**. This is to disambiguate Firestore to Firebase Realtime Database
