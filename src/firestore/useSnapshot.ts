@@ -47,6 +47,8 @@ import { DocumentSnapshot, QueryDocumentSnapshot, snapshotEqual } from 'firebase
  * @group Firestore
  * @category Hooks
  */
-export function useSnapshot<T extends DocumentSnapshot | QueryDocumentSnapshot>(snapshot: T): T {
+export function useSnapshot<T extends DocumentSnapshot | QueryDocumentSnapshot>(
+  snapshot: T | null
+): T | null {
   return useDistinct(snapshot, snapshotEqual);
 }
