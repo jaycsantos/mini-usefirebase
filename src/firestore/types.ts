@@ -81,7 +81,7 @@ export enum RefCache {
  */
 export type WithFirestore = WithFirebaseApp & {
   /** Firestore instance */
-  db?: Firestore;
+  firestore?: Firestore;
 };
 
 /**

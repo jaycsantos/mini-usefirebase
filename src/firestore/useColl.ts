@@ -70,7 +70,7 @@ import { useFirestoreGetter } from './useFirestoreGetter';
  * function MyComponent({firebaseApp}) {
  *  const options = {
  *    app: firebaseApp, // either app
- *    db: getFirestore(firebaseApp), // or db
+ *    firestore: getFirestore(firebaseApp), // or firestore
  *  }
  *  const result = useColl('users', [where('verified', '==', true)], options);
  *  //...

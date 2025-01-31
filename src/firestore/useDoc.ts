@@ -36,7 +36,7 @@ import { useDocRef } from './useDocRef';
  *
  * Using with existing DocumentReference
  * ```typescript
- * const docRef = doc(db, 'users/125');
+ * const docRef = doc(firestore, 'users/125');
  * const { data, loading, error } = useDoc(docRef);
  * ```
  *
