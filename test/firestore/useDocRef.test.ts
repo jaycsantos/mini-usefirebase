@@ -6,7 +6,7 @@ import { db } from './helpers';
 
 describe('useDocRef', () => {
   it('should memoize docRef from path', async () => {
-    const { result, rerender } = renderHook(() => useDocRef('test/1', { db }));
+    const { result, rerender } = renderHook(() => useDocRef('test/1', { firestore: db }));
 
     const docRef = result.current;
     rerender();
@@ -17,10 +17,10 @@ describe('useDocRef', () => {
     const { result, rerender } = renderHook<
       DocumentReference,
       Parameters<typeof useDocRef<DocumentData>>
-    >((props) => useDocRef(...props), { initialProps: ['test/1', { db }] });
+    >((props) => useDocRef(...props), { initialProps: ['test/1', { firestore: db }] });
 
     const docRef = result.current;
-    rerender(['test/2', { db }]);
+    rerender(['test/2', { firestore: db }]);
     expect(result.current).not.toBe(docRef);
   });
 

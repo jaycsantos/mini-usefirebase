@@ -21,7 +21,9 @@ describe('useColl', () => {
   afterAll(async () => await admin.deleteCollection(collName));
 
   it('should return snapshot, data, isLoading, and error', async () => {
-    const { result } = renderHook(() => useColl(collName, [], { db, cache: RefCache.one }));
+    const { result } = renderHook(() =>
+      useColl(collName, [], { firestore: db, cache: RefCache.one })
+    );
 
     await waitFor(() => {
       expect(result.current.isLoading).toBe(true);
@@ -36,7 +38,7 @@ describe('useColl', () => {
   });
 
   it('should listen to real-time updates as default', async () => {
-    const { result } = renderHook(() => useColl(collName, [], { db }));
+    const { result } = renderHook(() => useColl(collName, [], { firestore: db }));
 
     await waitFor(() => {
       expect(result.current.isLoading).toBe(false);
@@ -60,7 +62,9 @@ describe('useColl', () => {
   });
 
   it('should be retriable', async () => {
-    const { result } = renderHook(() => useColl(collName, [], { db, cache: RefCache.one }));
+    const { result } = renderHook(() =>
+      useColl(collName, [], { firestore: db, cache: RefCache.one })
+    );
 
     await waitFor(() => {
       expect(result.current.isLoading).toBe(false);

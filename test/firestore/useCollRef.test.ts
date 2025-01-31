@@ -11,7 +11,7 @@ describe('useCollRef', () => {
     const collName = 'users';
     const constraint: QueryConstraint = where('age', '>', 18);
 
-    const { result } = renderHook(() => useCollRef(collName, constraint, { db }));
+    const { result } = renderHook(() => useCollRef(collName, constraint, { firestore: db }));
 
     expect(result.current).toBeInstanceOf(Query);
   });
@@ -20,7 +20,7 @@ describe('useCollRef', () => {
     const collName = 'users';
     const constraints: QueryConstraint[] = [where('age', '>', 18), where('active', '==', true)];
 
-    const { result } = renderHook(() => useCollRef(collName, constraints, { db }));
+    const { result } = renderHook(() => useCollRef(collName, constraints, { firestore: db }));
 
     expect(result.current).toBeInstanceOf(Query);
   });
@@ -38,7 +38,9 @@ describe('useCollRef', () => {
     const collName = 'users';
     const constraint: QueryConstraint = where('age', '>', 18);
 
-    const { result, rerender } = renderHook(() => useCollRef(collName, constraint, { db }));
+    const { result, rerender } = renderHook(() =>
+      useCollRef(collName, constraint, { firestore: db })
+    );
 
     const queryRef = result.current;
     rerender();
@@ -51,7 +53,7 @@ describe('useCollRef', () => {
     const constraint2: QueryConstraint = where('age', '<', 30);
 
     const { result, rerender } = renderHook(
-      ({ constraints }) => useCollRef(collName, constraints, { db }),
+      ({ constraints }) => useCollRef(collName, constraints, { firestore: db }),
       {
         initialProps: { constraints: constraint1 },
       }
