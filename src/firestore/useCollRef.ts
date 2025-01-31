@@ -42,22 +42,27 @@ import { useFirestore } from './useFirestore';
  * @category Hooks
  */
 export function useCollRef<T = DocumentData, R = DocumentData>(
-  refOrName: Query<R> | string,
+  refOrName: Query<R> | string | null,
   constraints?: QueryConstraint | QueryConstraint[],
   options?: RefOptions<T>
-): Query<T> {
+): Query<T> | null {
   options = Object.assign(
-    typeof refOrName != 'string' ? { app: refOrName.firestore.app } : {},
+    refOrName instanceof Query ? { app: refOrName.firestore.app } : {},
     options ?? {}
   );
-  const db = useFirestore(options);
-  let queryRef = typeof refOrName == 'string' ? (collection(db, refOrName) as Query<R>) : refOrName;
+  const firestore = useFirestore(options);
+  let queryRef =
+    typeof refOrName == 'string'
+      ? refOrName.length
+        ? (collection(firestore, refOrName) as Query<R>)
+        : null
+      : refOrName;
 
   constraints = constraints ? (Array.isArray(constraints) ? constraints : [constraints]) : [];
-  if (constraints.length > 0) queryRef = query(queryRef, ...constraints);
+  if (constraints.length > 0 && queryRef) queryRef = query(queryRef, ...constraints);
 
-  let ref = queryRef as Query<T>;
-  if (options) {
+  let ref = queryRef as Query<T> | null;
+  if (options && queryRef) {
     if (options.converter) {
       ref = queryRef.withConverter<T>(options.converter);
     } else if (options.converter === null) {

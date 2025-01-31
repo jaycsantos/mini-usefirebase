@@ -85,7 +85,7 @@ import { useFirestoreGetter } from './useFirestoreGetter';
  * @category Hooks
  */
 export function useColl<T = DocumentData, R = DocumentData>(
-  pathOrQuery: Query<R> | string,
+  pathOrQuery: Query<R> | string | null,
   constraints?: QueryConstraint | QueryConstraint[],
   options?: RefOptions<T>
 ): RefResult<Array<T>, QuerySnapshot<T>> {
@@ -93,11 +93,7 @@ export function useColl<T = DocumentData, R = DocumentData>(
 
   const queryRef = useCollRef<T, R>(pathOrQuery, constraints ?? [], options);
 
-  const results = useFirestoreGetter<T, Query<T>, QuerySnapshot<T>>({
-    from,
-    ref: queryRef,
-    options,
-  });
+  const results = useFirestoreGetter<T, Query<T>, QuerySnapshot<T>>(from, queryRef, options);
 
   return {
     ...results,

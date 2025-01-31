@@ -38,26 +38,27 @@ export function useFirestoreGetter<
   T = DocumentData,
   Ref extends Reference<T> = Reference<T>,
   Snap extends Snapshot<T> = Snapshot<T>,
->({
-  from,
-  ref,
-  options,
-}: {
-  from: FirestoreGetters<T, Ref, Snap>;
-  ref: Ref;
-  options: RefOptions<T>;
-}): RefResult<T, Snap> {
+>(
+  from: FirestoreGetters<T, Ref, Snap>,
+  ref: Ref | null,
+  options: RefOptions<T>
+): RefResult<T, Snap> {
   const {
     value: snapshot,
     error,
     isLoading,
     startAsync,
+    stopAsync,
     retries,
     retry,
   } = useRetriableAsyncState<Snap>();
   const cache = options.cache ?? RefCache.one;
 
   useEffect(() => {
+    if (!ref) {
+      stopAsync();
+      return;
+    }
     if (cache.startsWith('live') || cache == RefCache.oneCacheAndServer) {
       let unsub: () => void;
       startAsync((setSnapshot, setError) => {
@@ -97,7 +98,7 @@ export function useFirestoreGetter<
       startAsync(() => promise, snapshotEqual);
       return () => cancel;
     }
-  }, [ref, from, cache, retries, startAsync]);
+  }, [ref, from, cache, retries, startAsync, stopAsync]);
 
   return {
     snapshot,

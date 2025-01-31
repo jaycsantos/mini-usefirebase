@@ -65,4 +65,9 @@ describe('useCollRef', () => {
     rerender({ constraints: constraint2 });
     expect(result.current).not.toBe(queryRef);
   });
+
+  it('should return null if path is empty', async () => {
+    const { result } = renderHook(() => useCollRef(''));
+    expect(result.current).toBeNull();
+  });
 });

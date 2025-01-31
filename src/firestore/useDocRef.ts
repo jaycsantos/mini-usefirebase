@@ -13,7 +13,7 @@ import { useFirestore } from './useFirestore';
  * @template T - The type of document data if converter is used, defaults to DocumentData
  *
  * @param refOrPath - String path to the document or a DocumentReference
- * @param options - Hook options
+ * @param options - {@link RefOptions}
  *
  * @returns A memoized DocumentReference instance. The same reference is returned
  * unless the path or reference changes (compared using refEqual)
@@ -40,19 +40,23 @@ import { useFirestore } from './useFirestore';
  * @category Hooks
  */
 export function useDocRef<T = DocumentData, R = DocumentData>(
-  refOrPath: string | DocumentReference<R>,
+  refOrPath: string | DocumentReference<R> | null,
   options?: RefOptions<T>
-): DocumentReference<T> {
+): DocumentReference<T> | null {
   options = Object.assign(
-    typeof refOrPath != 'string' ? { app: refOrPath.firestore.app } : {},
+    refOrPath instanceof DocumentReference ? { app: refOrPath.firestore.app } : {},
     options ?? {}
   );
-  const db = useFirestore(options);
+  const firestore = useFirestore(options);
   const docRef =
-    typeof refOrPath == 'string' ? (doc(db, refOrPath) as DocumentReference<R>) : refOrPath;
+    typeof refOrPath == 'string'
+      ? refOrPath.length
+        ? (doc(firestore, refOrPath) as DocumentReference<R>)
+        : null
+      : refOrPath;
 
-  let ref = docRef as DocumentReference<T>;
-  if (options) {
+  let ref = docRef as DocumentReference<T> | null;
+  if (options && docRef) {
     if (options.converter) {
       ref = docRef.withConverter(options.converter);
     } else if (options.converter === null) {

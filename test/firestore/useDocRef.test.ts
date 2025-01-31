@@ -42,4 +42,9 @@ describe('useDocRef', () => {
     rerender(doc(firestore, 'test/2'));
     expect(result.current).not.toBe(docRef);
   });
+
+  it('should return null if path is empty', async () => {
+    const { result } = renderHook(() => useDocRef(''));
+    expect(result.current).toBeNull();
+  });
 });

@@ -5,6 +5,7 @@ type AsyncState<T, E extends Error> = {
   error: E | null;
   isLoading: boolean;
   startAsync: (action: StartAsyncAction<T>, compare?: Comparator<T>) => void;
+  stopAsync: () => void;
 };
 
 type StartAsyncAction<T> = (
@@ -50,10 +51,17 @@ export default function useAsyncState<T, E extends Error = Error>(options?: {
     }
   }, []);
 
+  const stopAsync = useCallback(() => {
+    setLoading(false);
+    setValue(null);
+    setError(null);
+  }, []);
+
   return {
     value,
     error,
     isLoading,
     startAsync,
+    stopAsync,
   };
 }

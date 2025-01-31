@@ -47,13 +47,14 @@ import { type RefResult } from './types';
  * @category Hooks
  */
 export function useAggr<T extends AggregateSpec>(
-  query: Query,
+  query: Query | null,
   aggregate: T
 ): RefResult<AggregateSpecData<T>, AggregateQuerySnapshot<T>> {
   const {
     value: snapshot,
     error,
     startAsync,
+    stopAsync,
     isLoading,
     retries,
     retry,
@@ -62,12 +63,16 @@ export function useAggr<T extends AggregateSpec>(
   const queryRef = useDistinct(query, queryEqual);
 
   useEffect(() => {
+    if (!queryRef) {
+      stopAsync();
+      return;
+    }
     const { promise, cancel } = cancellable<AggregateQuerySnapshot<T>>(
       getAggregateFromServer<T, DocumentData, DocumentData>(queryRef, aggregate)
     );
     startAsync(() => promise, aggregateQuerySnapshotEqual<T, DocumentData, DocumentData>);
     return () => cancel();
-  }, [queryRef, aggregate, retries, startAsync]);
+  }, [queryRef, aggregate, retries, startAsync, stopAsync]);
 
   return {
     snapshot,

@@ -14,10 +14,13 @@ import { useRef } from 'react';
  * @group Common
  * @category Hooks
  */
-export default function useDistinct<T>(value: T, compare?: (a: T, b: T) => boolean): T {
+export default function useDistinct<T>(
+  value: T | null,
+  compare?: (a: T, b: T) => boolean
+): T | null {
   compare ??= Object.is;
   const ref = useRef<T>(value);
-  if (!ref.current || !compare(ref.current, value)) {
+  if (value && (!ref.current || !compare(ref.current, value))) {
     ref.current = value;
   }
   return ref.current;

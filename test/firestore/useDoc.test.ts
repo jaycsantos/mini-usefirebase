@@ -29,6 +29,15 @@ describe('useDoc', () => {
     });
   });
 
+  it('should return stopped state if null path', async () => {
+    const { result } = renderHook(() => useDoc(null));
+
+    await waitFor(() => {
+      expect(result.current.isLoading).toBe(false);
+      expect(result.current.error).toBeNull();
+      expect(result.current.snapshot).toBeNull();
+    });
+  });
 
   it('should listen to real-time updates as default', async () => {
     const path = `${collName}/realtime`;

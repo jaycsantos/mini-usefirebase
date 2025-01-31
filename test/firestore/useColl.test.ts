@@ -37,6 +37,16 @@ describe('useColl', () => {
     });
   });
 
+  it('should return stopped state if null path', async () => {
+    const { result } = renderHook(() => useColl(null));
+
+    await waitFor(() => {
+      expect(result.current.isLoading).toBe(false);
+      expect(result.current.error).toBeNull();
+      expect(result.current.snapshot).toBeNull();
+    });
+  });
+
   it('should listen to real-time updates as default', async () => {
     const { result } = renderHook(() => useColl(collName, [], { firestore: firestore }));
 

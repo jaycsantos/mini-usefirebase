@@ -56,16 +56,16 @@ import { useDocRef } from './useDocRef';
  * @category Hooks
  */
 export function useDoc<T = DocumentData, R = DocumentData>(
-  pathOrRef: string | DocumentReference<R>,
+  pathOrRef: string | DocumentReference<R> | null,
   options?: RefOptions<T>
 ): RefResult<T, DocumentSnapshot<T>> {
   const docRef = useDocRef<T, R>(pathOrRef, options);
 
-  const results = useFirestoreGetter<T, DocumentReference<T>, DocumentSnapshot<T>>({
+  const results = useFirestoreGetter<T, DocumentReference<T>, DocumentSnapshot<T>>(
     from,
-    ref: docRef,
-    options: Object.assign({ cache: RefCache.liveServer }, options ?? {}) as RefOptions<T>,
-  });
+    docRef,
+    Object.assign({ cache: RefCache.liveServer }, options ?? {}) as RefOptions<T>
+  );
 
   return {
     ...results,
