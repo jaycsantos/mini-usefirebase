@@ -1,5 +1,10 @@
 # Change Log
 
+## 0.4.0
+
+- Rename firestore options to use `firestore` instead of `db`. -- **BREAKING CHANGE**. This is to disambiguate Firestore to Firebase Realtime Database
+- hook path/ref are now nullable -- this effectively "stops" the hook which returns a "stopped" state eg. `{snapshot:null, isLoading:false, error:null}`
+
 ## 0.3.1
 
 - added [RefCache](https://github.com/jaycsantos/mini-usefirebase/wiki/Enumeration.RefCache#enumeration-members) liveCache & liveCacheMetadata
