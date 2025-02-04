@@ -26,19 +26,20 @@ import { initializeApp } from 'firebase/app';
 initializeApp(firebaseConfig);
 ```
 
-Now use the hooks. That easy
+Now use the hooks.
+
+### Firestore
 
 ```typescript
 import { useDoc } from 'mini-usefirebase';
-import { where } from 'firebase/firestore';
 
 export function CityComponent({ id }) {
-  const { data, isLoading, error } = useDoc(`cities/${id}`);
+  const { snapshot, isLoading, error } = useDoc(`cities/${id}`);
   //...
 }
 ```
 
-Note: This assumes that you don't set the app's name to something else and it will use firebase default `[DEFAULT]`.
+Note: These assumes that you don't set the app's name to something else and it will use firebase default `[DEFAULT]`.
 
 ### Multiple firebase instance and/or custom app name
 
@@ -87,7 +88,7 @@ See [CHANGELOG.md](https://github.com/jaycsantos/mini-usefirebase/blob/main/CHAN
 - [x] useFirebase
 - [x] useFirestore
 - [x] useAuth
-- [ ] useDatabase
+- [x] useDatabase
 - [ ] useFunctions
 - [ ] useStorage
 
