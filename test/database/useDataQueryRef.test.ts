@@ -1,6 +1,6 @@
+import { useDataQueryRef } from '@/database/useDataQueryRef';
 import { renderHook } from '@testing-library/react';
-import { ref, query, QueryConstraint, orderByChild, equalTo } from 'firebase/database';
-import { useQueryRef } from '../../src/database/useQueryRef';
+import { equalTo, orderByChild, query, QueryConstraint, ref } from 'firebase/database';
 import { database } from './helpers';
 
 describe('useQuery', () => {
@@ -8,7 +8,7 @@ describe('useQuery', () => {
     const path = 'users';
     const constraint: QueryConstraint = orderByChild('age');
 
-    const { result, rerender } = renderHook(() => useQueryRef(path, constraint, { database }));
+    const { result, rerender } = renderHook(() => useDataQueryRef(path, constraint, { database }));
 
     const queryRef = result.current;
     rerender();
@@ -19,7 +19,7 @@ describe('useQuery', () => {
     const path = 'users';
     const constraints: QueryConstraint[] = [orderByChild('age'), equalTo(true, 'active')];
 
-    const { result, rerender } = renderHook(() => useQueryRef(path, constraints, { database }));
+    const { result, rerender } = renderHook(() => useDataQueryRef(path, constraints, { database }));
 
     const queryRef = result.current;
     rerender();
@@ -30,7 +30,7 @@ describe('useQuery', () => {
     const baseQuery = query(ref(database, 'users'), orderByChild('age'));
     const constraint: QueryConstraint = equalTo(true, 'active');
 
-    const { result, rerender } = renderHook(() => useQueryRef(baseQuery, constraint));
+    const { result, rerender } = renderHook(() => useDataQueryRef(baseQuery, constraint));
 
     const queryRef = result.current;
     rerender();
@@ -43,7 +43,7 @@ describe('useQuery', () => {
     const constraint2: QueryConstraint = orderByChild('name');
 
     const { result, rerender } = renderHook(
-      ({ constraints }) => useQueryRef(path, constraints, { database }),
+      ({ constraints }) => useDataQueryRef(path, constraints, { database }),
       {
         initialProps: { constraints: constraint1 },
       }
@@ -55,7 +55,7 @@ describe('useQuery', () => {
   });
 
   it('should return null if path is empty', async () => {
-    const { result } = renderHook(() => useQueryRef('', []));
+    const { result } = renderHook(() => useDataQueryRef('', []));
     expect(result.current).toBeNull();
   });
 });

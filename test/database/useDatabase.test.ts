@@ -1,7 +1,7 @@
+import { useDatabase } from '@/database/useDatabase';
 import { renderHook } from '@testing-library/react';
 import { deleteApp, FirebaseApp, getApps, initializeApp } from 'firebase/app';
 import { Database, getDatabase } from 'firebase/database';
-import { useDatabase } from '../../src/database/useDatabase';
 
 describe('useDatabase', () => {
   beforeAll(() => {

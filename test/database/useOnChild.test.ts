@@ -1,8 +1,8 @@
+import { useDataQueryRef } from '@/database/useDataQueryRef';
+import { useDataChild } from '@/database/useOnChild';
 import { renderHook, waitFor } from '@testing-library/react';
 import { orderByChild, ref } from 'firebase/database';
 import { act } from 'react';
-import { useDataChild } from '../../src/database/useOnChild';
-import { useQueryRef } from '../../src/database/useQueryRef';
 import { admin, database } from './helpers';
 
 describe('useDataChild', () => {
@@ -67,7 +67,7 @@ describe('useDataChild', () => {
     const onMove = vi.fn();
     const onError = vi.fn();
     renderHook(() =>
-      useDataChild(useQueryRef(testRef, orderByChild('priority')), { onMove, onError })
+      useDataChild(useDataQueryRef(testRef, orderByChild('priority')), { onMove, onError })
     );
 
     await act(() => adminRef.child(key1).set({ value: key1, priority: 3 }));

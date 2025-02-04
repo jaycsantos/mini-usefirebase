@@ -1,16 +1,31 @@
-import { Prettify, WithFirebaseApp } from '@/common/types';
 import { useFirebase } from '@/useFirebase';
-import { Database, getDatabase } from 'firebase/database';
+import { getDatabase } from 'firebase/database';
+import { WithDatabase } from './types';
 
-export type WithDatabase = Prettify<
-  WithFirebaseApp & {
-    /** firebase database instance to use or database url */
-    database?: Database | string;
-  }
->;
-
+/**
+ * Hook to get Firebase Realtime Database instance
+ *
+ * @param options
+ * @param options.app - Firebase app instance
+ * @param options.database - Existing database instance or Database URL
+ * @returns Firebase Realtime Database instance
+ *
+ * @example
+ *
+ * ```typescript
+ * const db = useDatabase();
+ * ```
+ *
+ * With a custom database URL
+ * ```typescript
+ * const db = useDatabase({ database: 'https://your-db.firebaseio.com' });
+ * ```
+ *
+ * @group Database
+ * @category Hooks
+ */
 export function useDatabase(options?: WithDatabase) {
   const app = useFirebase(options);
   const db = options?.database;
-  return db instanceof Database ? db : getDatabase(app, typeof db == 'string' ? db : undefined);
+  return typeof db == 'string' || !db ? getDatabase(app, db) : db;
 }

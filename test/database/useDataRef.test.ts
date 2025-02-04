@@ -1,6 +1,6 @@
+import { useDataRef } from '@/database/useDataRef';
 import { renderHook } from '@testing-library/react';
-import { ref, Query, DatabaseReference } from 'firebase/database';
-import { useDataRef } from '../../src/database/useDataRef';
+import { DatabaseReference, Query, ref } from 'firebase/database';
 import { database } from './helpers';
 
 describe('useDataRef', () => {

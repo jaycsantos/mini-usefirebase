@@ -1,9 +1,9 @@
+import { useData } from '@/database/useData';
 import { act, renderHook, waitFor } from '@testing-library/react';
 import { afterAll, describe, expect, it } from 'vitest';
-import { useObject } from '../../src/database/useObject';
 import { admin, database } from './helpers';
 
-describe('useObject', () => {
+describe('useData', () => {
   const baseObj = 'test';
 
   beforeAll(async () => admin.ref(baseObj).set({}));
@@ -15,7 +15,7 @@ describe('useObject', () => {
 
     await admin.ref(path).set(payload);
 
-    const { result } = renderHook(() => useObject(path, { database }));
+    const { result } = renderHook(() => useData(path, { database }));
 
     expect(result.current.isLoading).toBe(true);
 
@@ -28,7 +28,7 @@ describe('useObject', () => {
   });
 
   it('should return stopped state if null path', async () => {
-    const { result } = renderHook(() => useObject(null));
+    const { result } = renderHook(() => useData(null));
 
     await waitFor(() => {
       expect(result.current.isLoading).toBe(false);
@@ -42,7 +42,7 @@ describe('useObject', () => {
     const payload = { count: 1 };
     await admin.ref(path).set(payload);
 
-    const { result } = renderHook(() => useObject(path, { database }));
+    const { result } = renderHook(() => useData(path, { database }));
 
     await waitFor(() => {
       expect(result.current.snapshot.val()).toEqual(payload);
@@ -58,7 +58,7 @@ describe('useObject', () => {
   });
 
   it('should get non-existing object', async () => {
-    const { result } = renderHook(() => useObject(`${baseObj}/no-exist`, { database }));
+    const { result } = renderHook(() => useData(`${baseObj}/no-exist`, { database }));
 
     await waitFor(() => {
       expect(result.current.isLoading).toBe(false);
@@ -74,7 +74,7 @@ describe('useObject', () => {
 
     await admin.ref(path).set(payload);
 
-    const { result } = renderHook(() => useObject(path, { database }));
+    const { result } = renderHook(() => useData(path, { database }));
     await waitFor(() => {
       expect(result.current.snapshot.val()).toEqual(payload);
       expect(result.current.isLoading).toBe(false);
