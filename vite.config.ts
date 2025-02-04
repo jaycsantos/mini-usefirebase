@@ -22,7 +22,7 @@ export default defineConfig({
         'firebase/firestore',
         'firebase/app',
         'firebase/auth',
-        'firebase/analytics',
+        'firebase/database',
         '@firebase/app-compat',
       ],
       output: {
