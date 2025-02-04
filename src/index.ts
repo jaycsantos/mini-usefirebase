@@ -21,5 +21,5 @@ export * from './database/types';
 export * from './database/useDatabase';
 export * from './database/useDataRef';
 export * from './database/useData';
-export * from './database/useOnChild';
+export * from './database/useDataChild';
 export * from './database/useDataQueryRef';
