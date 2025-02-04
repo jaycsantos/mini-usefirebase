@@ -4,7 +4,7 @@ import { RefOptions } from './types';
 import { useFirestore } from './useFirestore';
 
 /**
- * A custom hook for creating and memoizing Firestore DocumentReferences.
+ * Hook for creating and memoizing Firestore DocumentReferences.
  *
  * This hook can be used in two ways:
  * 1. With an existing DocumentReference to memoize it
@@ -59,7 +59,7 @@ export function useDocRef<T = DocumentData, R = DocumentData>(
   if (options && docRef) {
     if (options.converter) {
       ref = docRef.withConverter(options.converter);
-    } else if (options.converter === null) {
+    } else if (!options.converter) {
       ref = docRef.withConverter(null) as DocumentReference<T>;
     }
   }

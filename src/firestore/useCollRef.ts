@@ -65,7 +65,7 @@ export function useCollRef<T = DocumentData, R = DocumentData>(
   if (options && queryRef) {
     if (options.converter) {
       ref = queryRef.withConverter<T>(options.converter);
-    } else if (options.converter === null) {
+    } else if (!options.converter) {
       ref = queryRef.withConverter(null) as Query<T>;
     }
   }

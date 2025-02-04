@@ -85,9 +85,10 @@ export type WithFirestore = WithFirebaseApp & {
 };
 
 /**
- * Options for the `useDocRef` hook.
+ * Options for related Firestore reference hooks.
  * @interface FirestoreRefOptions<T>
  * @template T - The type of document data if converter is used.
+ *
  * @group Firestore
  * @category Interfaces
  */

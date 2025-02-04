@@ -59,7 +59,7 @@ export function useFirestoreGetter<
       stopAsync();
       return;
     }
-    if (cache.startsWith('live') || cache == RefCache.oneCacheAndServer) {
+    if (cache.startsWith('live') || cache === RefCache.oneCacheAndServer) {
       let unsub: () => void;
       startAsync((setSnapshot, setError) => {
         unsub = from.onSnapshot(
@@ -71,7 +71,7 @@ export function useFirestoreGetter<
           (snapshot) => {
             setSnapshot(snapshot);
 
-            if (cache == RefCache.oneCacheAndServer && !snapshot.metadata.fromCache) {
+            if (cache === RefCache.oneCacheAndServer && !snapshot.metadata.fromCache) {
               unsub();
             }
           },
