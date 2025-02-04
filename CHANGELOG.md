@@ -1,5 +1,14 @@
 # Change Log
 
+## 0.5.0
+
+- added realtime database hooks
+  - [useDatabase](https://github.com/jaycsantos/mini-usefirebase/wiki/Function.useDatabase)
+  - [useDataRef](https://github.com/jaycsantos/mini-usefirebase/wiki/Function.useDataRef)
+  - [useData](https://github.com/jaycsantos/mini-usefirebase/wiki/Function.useData)
+  - [useOnChild](https://github.com/jaycsantos/mini-usefirebase/wiki/Function.useOnChild)
+  - [useDataQueryRef](https://github.com/jaycsantos/mini-usefirebase/wiki/Function.useDataQueryRef)
+
 ## 0.4.1
 
 - fix useSnapshot to support nullable path/ref
