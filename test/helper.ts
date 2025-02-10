@@ -12,6 +12,8 @@ if (!process.env.FIREBASE_DATABASE_EMULATOR_HOST)
   vi.stubEnv('FIREBASE_DATABASE_EMULATOR_HOST', '127.0.0.1:9000');
 if (!process.env.FIREBASE_STORAGE_EMULATOR_HOST)
   vi.stubEnv('FIREBASE_STORAGE_EMULATOR_HOST', '127.0.0.1:9199');
+if (!process.env.FIREBASE_FUNCTIONS_EMULATOR_HOST)
+  vi.stubEnv('FIREBASE_FUNCTIONS_EMULATOR_HOST', '127.0.0.1:5001');
 
 export const adminApp = initializeAdminApp(firebaseConfig);
 

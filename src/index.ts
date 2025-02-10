@@ -23,3 +23,7 @@ export * from './database/useDataRef';
 export * from './database/useData';
 export * from './database/useDataChild';
 export * from './database/useDataQueryRef';
+
+export * from './functions/types';
+export * from './functions/useFunction';
+export * from './functions/useFunctions';
