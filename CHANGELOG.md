@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.6.2
+
+- update vite & vitest dependencies
+
 ## 0.6.1
 
 - fix documation
