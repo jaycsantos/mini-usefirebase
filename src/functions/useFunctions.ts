@@ -16,7 +16,7 @@ import { getFunctions } from 'firebase/functions';
  * const functions = useFunctions();
  * ```
  *
- * With a custom database URL
+ * With a custom region
  * ```typescript
  * const functions = useFunctions({ regionOrCustomDomain: 'us-central1' });
  * ```

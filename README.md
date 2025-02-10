@@ -89,7 +89,7 @@ See [CHANGELOG.md](https://github.com/jaycsantos/mini-usefirebase/blob/main/CHAN
 - [x] useFirestore
 - [x] useAuth
 - [x] useDatabase
-- [ ] useFunctions
+- [x] useFunctions
 - [ ] useStorage
 
 ## Support
