@@ -5,6 +5,37 @@ import { useEffect, useState } from 'react';
 import { FunctionOptions } from './types';
 import { useFunctions } from './useFunctions';
 
+/**
+ * A React hook that provides an interface to call Firebase Cloud Functions.
+ *
+ * @template RequestData - The type of data sent to the function
+ * @template ResponseData - The type of data received from the function
+ * @template StreamData - The type of data received in stream mode
+ *
+ * @param nameOrUrl - The name of the Cloud Function or its complete URL. If null, the operation is stopped
+ * @param options - Configuration options for the function call
+ * @param options.timeout - Maximum time to wait for the function to complete
+ * @param options.limitedUseAppCheckTokens - Whether to use limited-use App Check tokens
+ * @param options.onStream - Callback function to handle streamed data
+ *
+ * @returns An object containing:
+ * - result: The response data from the function
+ * - isLoading: Boolean indicating if the function is currently executing
+ * - error: Any error that occurred during execution
+ * - invoke: Function to call the Cloud Function normally
+ * - stream: Function to call the Cloud Function in stream mode
+ *
+ * @example
+ * ```typescript
+ * const { result, isLoading, error, invoke } = useFunction<RequestType, ResponseType>('functionName');
+ * // ...
+ *
+ * return <Button disabled={isLoading} onClick={()=>invoke({ data: 'example' })}>Call Function</Button>
+ * ```
+ *
+ * @group CloudFunctions
+ * @category Hooks
+ */
 export function useFunction<RequestData = unknown, ResponseData = unknown, StreamData = unknown>(
   nameOrUrl: string | null,
   options?: FunctionOptions<StreamData>
