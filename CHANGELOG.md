@@ -1,11 +1,19 @@
 # Change Log
 
+## 0.6.1
+
+- fix documation
+
 ## 0.6.0
 
 - added cloud function hooks
   - [useFunctions](https://github.com/jaycsantos/mini-usefirebase/wiki/Function.useFunctions)
   - [useFunction](https://github.com/jaycsantos/mini-usefirebase/wiki/Function.useFunction)
 - hooks returns are readonly
+
+## 0.5.1
+
+- fix documation
 
 ## 0.5.0
 
