@@ -27,8 +27,8 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "test": "firebase emulators:exec \"npx vitest run --coverage\"",
-    "test:watch": "firebase emulators:exec --ui \"npx vitest watch\"",
+    "test": "firebase emulators:exec --log-verbosity SILENT \"npx vitest run --coverage\"",
+    "test:watch": "firebase emulators:exec --ui --log-verbosity SILENT \"npx vitest watch\"",
     "preview": "vite preview"
   },
   "peerDependencies": {
