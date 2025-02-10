@@ -66,5 +66,5 @@ export function useAuthState(
     return () => unsub();
   }, [auth, startAsync, onChange]);
 
-  return { user, isLoading, error };
+  return { user, isLoading, error } as const;
 }

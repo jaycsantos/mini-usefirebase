@@ -1,5 +1,5 @@
 import { useDataQueryRef } from '@/database/useDataQueryRef';
-import { useDataChild } from '@/database/useOnChild';
+import { useDataChild } from '@/database/useDataChild';
 import { renderHook, waitFor } from '@testing-library/react';
 import { orderByChild, ref } from 'firebase/database';
 import { act } from 'react';

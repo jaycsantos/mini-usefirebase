@@ -15,5 +15,5 @@ export default function useRetriableAsyncState<T, E extends Error = Error>(
     ...state,
     retries,
     retry,
-  };
+  } as const;
 }

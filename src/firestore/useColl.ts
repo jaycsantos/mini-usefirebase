@@ -100,7 +100,7 @@ export function useColl<T = DocumentData, R = DocumentData>(
     get data() {
       return results.snapshot?.docs.map((snapshot) => snapshot.data());
     },
-  };
+  } as const;
 }
 
 const from = {

@@ -1,12 +1,12 @@
 import { useCallback, useState } from 'react';
 
-type AsyncState<T, E extends Error> = {
+type AsyncState<T, E extends Error> = Readonly<{
   value: T | null;
   error: E | null;
   isLoading: boolean;
   startAsync: (action: StartAsyncAction<T>, compare?: Comparator<T>) => void;
   stopAsync: () => void;
-};
+}>;
 
 type StartAsyncAction<T> = (
   setValue: (value: T | null) => void,
@@ -63,5 +63,5 @@ export default function useAsyncState<T, E extends Error = Error>(options?: {
     isLoading,
     startAsync,
     stopAsync,
-  };
+  } as const;
 }

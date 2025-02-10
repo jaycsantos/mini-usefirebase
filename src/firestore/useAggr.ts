@@ -82,5 +82,5 @@ export function useAggr<T extends AggregateSpec>(
     isLoading,
     error,
     retry,
-  };
+  } as const;
 }

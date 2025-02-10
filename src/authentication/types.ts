@@ -17,8 +17,10 @@ export type AuthOptions = Prettify<
  * @ignore
  */
 export type AsyncUser = Prettify<
-  WithAsyncState & {
-    /** Auth user instance */
-    user: User | null;
-  }
+  Readonly<
+    WithAsyncState & {
+      /** Auth user instance */
+      user: User | null;
+    }
+  >
 >;

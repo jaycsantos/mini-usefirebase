@@ -111,10 +111,12 @@ export type RefOptions<T = DocumentData> = Prettify<
  * @category Interfaces
  */
 export type RefResult<T, S> = Prettify<
-  WithRetryAsyncState & {
-    /** The document data */
-    data?: T;
-    /** The Firestore snapshot */
-    snapshot: S | null;
-  }
+  Readonly<
+    WithRetryAsyncState & {
+      /** The document data */
+      data?: T;
+      /** The Firestore snapshot */
+      snapshot: S | null;
+    }
+  >
 >;

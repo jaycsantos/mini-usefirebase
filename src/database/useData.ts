@@ -57,5 +57,5 @@ export function useData(
     return () => unsub();
   }, [dbRef, startAsync, stopAsync, onlyOnce, retries]);
 
-  return { snapshot, error, isLoading, retry };
+  return { snapshot, error, isLoading, retry } as const;
 }

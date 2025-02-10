@@ -72,7 +72,7 @@ export function useDoc<T = DocumentData, R = DocumentData>(
     get data() {
       return results.snapshot?.data();
     },
-  };
+  } as const;
 }
 
 const from = {

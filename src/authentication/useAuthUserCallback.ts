@@ -85,5 +85,5 @@ export function useAuthUserCallback<R, A extends Array<unknown>>(
     result: value,
     isLoading,
     error,
-  };
+  } as const;
 }

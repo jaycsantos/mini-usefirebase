@@ -105,5 +105,5 @@ export function useFirestoreGetter<
     error,
     isLoading,
     retry,
-  };
+  } as const;
 }
